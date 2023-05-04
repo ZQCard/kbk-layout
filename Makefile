@@ -109,17 +109,7 @@ initNewService:
 	@ mv ./internal/service/example.go ./internal/service/$(ServiceLowerName).go
 	@ mv ./internal/biz/example.go ./internal/biz/$(ServiceLowerName).go
 	@ mv ./internal/data/example.go ./internal/data/$(ServiceLowerName).go
-	@ mv ./internal/data/hooks/example.go ./internal/data/hooks/$(ServiceLowerName).go
 	@ mv ./internal/domain/example.go ./internal/domain/$(ServiceLowerName).go
-# 删除老的ent文件
-	@ mv ./internal/data/ent/schema/example.go ./internal/$(ServiceLowerName).go
-	@ mv ./internal/data/ent/schema/timemixin.go ./internal/timemixin.go
-	@ rm -rf ./internal/data/ent/
-	@ cd ./internal/data/ && go run -mod=mod entgo.io/ent/cmd/ent new $(ServiceUpperName)
-## 建立新的ent
-	@ mv ./internal/$(ServiceLowerName).go ./internal/data/ent/schema/$(ServiceLowerName).go
-	@ mv ./internal/timemixin.go ./internal/data/ent/schema/timemixin.go
-	@ go generate ./internal/data/ent/
 # 拉取引用包
 	go mod tidy
 	@echo "project start success"
