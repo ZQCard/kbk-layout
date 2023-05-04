@@ -5,7 +5,7 @@
 假设项目目录为data-center
 
 ```
-kratos new data-center -r https://codeup.aliyun.com/5feaa374c9b6991721d6af81/sweet-kratos-template
+kratos new data-center -r https://github.com/ZQCard/kratos-base-layout.git
 ```
 # 2.初始化项目package
 ```
@@ -21,7 +21,7 @@ make initNewService ServiceUpperName=Store ServiceLowerName=store
 
 log: kratos/v2/log
 
-orm:ent， 包含增删改的before、after hook
+orm: gorm
 
 doc: swagger
 
@@ -30,8 +30,6 @@ proto-validate:protoc-gen-validate
 db: mysql
 
 cache:redis
-
-rpc:示例的ddContacts rpcClient
 
 pkg/utils: 常用函数包
 
@@ -44,7 +42,5 @@ pkg/utils: 常用函数包
 2. http://localhost:8000/q/swagger-ui/ 查看接口文档
 
 3. 使用protoc-gen-validate进行proto接口参数验证
-   
-4. 增加make lowcode则使用sweet7的lowcode模式   
 
 
