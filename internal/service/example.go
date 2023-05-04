@@ -29,7 +29,7 @@ func NewExampleService(exampleUsecase *biz.ExampleUsecase, logger log.Logger) *E
 func (s *ExampleService) GetExampleList(ctx context.Context, reqData *exampleV1.GetExampleListReq) (*exampleV1.GetExampleListPageRes, error) {
 	params := typeConvert.StructToMap(reqData)
 	page, pageSize := paginationhelper.Pagination(params)
-	list, count, err := s.exampleUsecase.ListExample(ctx, int64(page), int64(pageSize), params)
+	list, count, err := s.exampleUsecase.ListExample(ctx, page, pageSize, params)
 	if err != nil {
 		return nil, err
 	}
