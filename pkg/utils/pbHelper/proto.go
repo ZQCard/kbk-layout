@@ -1,4 +1,4 @@
-package pbhelper
+package pbHelper
 
 import (
 	"time"
@@ -7,7 +7,7 @@ import (
 	"github.com/golang/protobuf/ptypes/timestamp"
 )
 
-// Convert a protobuf Timestamp to a Golang time.Time object
+// Convert a protobuf Timestamp to a Golang time.Time object.
 func ProtoTimestampToTime(ts *timestamp.Timestamp) time.Time {
 	t, _ := ptypes.Timestamp(ts)
 	return t
