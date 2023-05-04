@@ -5,7 +5,7 @@
 假设项目目录为data-center
 
 ```
-kratos new data-center -r https://github.com/ZQCard/kratos-base-layout.git
+kratos new data-center -r git@github.com:ZQCard/kratos-base-layout.git
 ```
 # 2.初始化项目package
 ```
