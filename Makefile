@@ -85,11 +85,6 @@ help:
 
 .DEFAULT_GOAL := help
 
-.PHONY: ent
-# ent
-ent:
-	go generate ./internal/data/ent/...
-
 .PHONY: initProject
 initProject:
 # 初始化项目，将package改为project, 即 module repo.sweet7.com/$(PROJECT)
@@ -128,20 +123,3 @@ initNewService:
 # 拉取引用包
 	go mod tidy
 	@echo "project start success"
-.PHONY:lowcode
-lowcode:
-	@mkdir -p ./internal/lowcode_schema
-	@touch ./internal/lowcode_schema/store.json
-	@echo '{"collection":"store","business_type":"示例","schema":{"name":"store","comment":"示例表"},"fields":[{"field":"主键id","schema":{"name":"id","data_type":"integer","is_primary_key":true,"is_unique_key":true,"has_auto_increment":true,"comment":"自增ID"}},{"field":"名称","schema":{"name":"name","data_type":"string","comment":"名称"}},{"field":"状态","schema":{"name":"status","data_type":"bool","comment":"1:启用 2:禁用"}}]}' > ./internal/lowcode_schema/store.json
-	@echo 'replace repo.sweet7.com/lowcode => codeup.aliyun.com/5feaa374c9b6991721d6af81/backend/lowcode.git v1.1.3' >> ./go.mod
-	@sed -i '6i\require repo.sweet7.com\/lowcode v1.0.0' ./go.mod
-	@sed -i '13i\\tlowcode \"repo.sweet7.com\/lowcode/export\"' ./internal/server/http.go
-	@sed -i '13i\\t \"github.com\/go-kratos\/kratos\/v2\/transport\/grpc"' ./internal/server/http.go
-	@sed -i '13i\\t \"entgo.io\/ent\/dialect"' ./internal/server/http.go
-	@sed -i '39i\// register lowcode service\n\terr := lowcode.RegisterLowcodeSrv(srv, grpcSrv, logger, drv)\n\tif err != nil {\n\t\tpanic(err)\n\t}' ./internal/server/http.go
-	@sed -i 's/logger log\.Logger)/logger log.Logger, grpcSrv \*grpc\.Server, drv dialect.Driver)/g' ./internal/server/http.go
-	@cd ./cmd/$(PROJECT) && wire
-	go mod tidy
-.PHONY: entGen
-entGen:
-	@ go generate ./internal/data/ent/  
