@@ -22,9 +22,13 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ExampleServiceClient interface {
+	// 列表
 	GetExampleList(ctx context.Context, in *GetExampleListReq, opts ...grpc.CallOption) (*GetExampleListPageRes, error)
+	// 创建
 	CreateExample(ctx context.Context, in *CreateExampleReq, opts ...grpc.CallOption) (*Example, error)
+	// 更新
 	UpdateExample(ctx context.Context, in *UpdateExampleReq, opts ...grpc.CallOption) (*CheckResponse, error)
+	// 删除
 	DeleteExample(ctx context.Context, in *DeleteExampleReq, opts ...grpc.CallOption) (*CheckResponse, error)
 }
 
@@ -76,9 +80,13 @@ func (c *exampleServiceClient) DeleteExample(ctx context.Context, in *DeleteExam
 // All implementations must embed UnimplementedExampleServiceServer
 // for forward compatibility
 type ExampleServiceServer interface {
+	// 列表
 	GetExampleList(context.Context, *GetExampleListReq) (*GetExampleListPageRes, error)
+	// 创建
 	CreateExample(context.Context, *CreateExampleReq) (*Example, error)
+	// 更新
 	UpdateExample(context.Context, *UpdateExampleReq) (*CheckResponse, error)
+	// 删除
 	DeleteExample(context.Context, *DeleteExampleReq) (*CheckResponse, error)
 	mustEmbedUnimplementedExampleServiceServer()
 }

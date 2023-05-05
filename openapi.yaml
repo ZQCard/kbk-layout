@@ -3,27 +3,34 @@
 
 openapi: 3.0.3
 info:
-    title: ExampleService API
-    version: 0.0.1
+    title: 示例服务
+    description: 示例服务
+    contact:
+        name: qi.zhou
+    version: 2.0.1
 paths:
     /example:
         get:
             tags:
                 - ExampleService
+            description: 列表
             operationId: ExampleService_GetExampleList
             parameters:
                 - name: page
                   in: query
+                  description: 主键id
                   schema:
                     type: integer
                     format: int64
                 - name: pageSize
                   in: query
+                  description: 页记录数
                   schema:
                     type: integer
                     format: int64
                 - name: name
                   in: query
+                  description: 名称
                   schema:
                     type: string
             responses:
@@ -42,6 +49,7 @@ paths:
         put:
             tags:
                 - ExampleService
+            description: 更新
             operationId: ExampleService_UpdateExample
             requestBody:
                 content:
@@ -65,6 +73,7 @@ paths:
         post:
             tags:
                 - ExampleService
+            description: 创建
             operationId: ExampleService_CreateExample
             requestBody:
                 content:
@@ -88,10 +97,12 @@ paths:
         delete:
             tags:
                 - ExampleService
+            description: 删除
             operationId: ExampleService_DeleteExample
             parameters:
                 - name: id
                   in: query
+                  description: 主键id
                   schema:
                     type: integer
                     format: int64
@@ -110,44 +121,56 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
+        Any:
+            type: object
+            properties:
+                value:
+                    $ref: '#/components/schemas/GoogleProtobufAny'
+                yaml:
+                    type: string
         CheckResponse:
             type: object
             properties:
                 success:
                     type: boolean
+            description: 响应 - 检查是否处理成功
         CreateExampleReq:
             type: object
             properties:
                 name:
                     type: string
+                    description: 名称
                 status:
                     type: boolean
+            description: 请求 - 创建
         Example:
             type: object
             properties:
-                id:
-                    type: integer
-                    format: int64
-                name:
+                summary:
                     type: string
-                status:
-                    type: boolean
-                createdAt:
+                description:
                     type: string
-                    format: date-time
-                updatedAt:
+                value:
+                    $ref: '#/components/schemas/Any'
+                externalValue:
                     type: string
-                    format: date-time
+                specificationExtension:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/NamedAny'
         GetExampleListPageRes:
             type: object
             properties:
                 total:
                     type: integer
+                    description: 总数
                     format: int64
                 list:
                     type: array
                     items:
                         $ref: '#/components/schemas/Example'
+                    description: 列表
+            description: 响应 - 分页
         GoogleProtobufAny:
             type: object
             properties:
@@ -156,6 +179,15 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        NamedAny:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: Map key
+                value:
+                    $ref: '#/components/schemas/Any'
+            description: Automatically-generated message used to represent maps of Any as ordered (name,value) pairs.
         Status:
             type: object
             properties:
@@ -177,10 +209,14 @@ components:
             properties:
                 id:
                     type: integer
+                    description: 主键id
                     format: int64
                 name:
                     type: string
+                    description: 名称
                 status:
                     type: boolean
+                    description: 状态
+            description: 请求 - 更新
 tags:
     - name: ExampleService

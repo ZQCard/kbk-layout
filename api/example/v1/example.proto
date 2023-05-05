@@ -7,152 +7,127 @@ import "google/api/annotations.proto";
 
 import "validate/validate.proto";
 
-import "protoc-gen-openapiv2/options/annotations.proto";
+import "openapiv3/annotations.proto";
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/ZQCard/kratos-base-layout/api/v1/store";
 
-option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+option go_package = "repo.sweet7.com/sweet7-kratos-template/api/v1/store";
+
+option (openapi.v3.document) = {
     info: {
-        title: "示例项目",
+        title: "示例服务",
         version: "2.0.1",
         contact: {
             name: "qi.zhou",
             url: "",
             email: ""
-        }
+        },
+        description: "示例服务";
     },
-    base_path: "/v2",
-    host: "api-test.sweet7.com/kratos-base-layout",
-    schemes: [HTTPS]
 };
+
+// 示例服务
 service ExampleService {
+    // 列表
     rpc GetExampleList(GetExampleListReq) returns(GetExampleListPageRes){
-        option (google.api.http) = {
-            get:"/example"
-        };
-        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            summary: "列表"
-            description: "示例列表"
-            tags: "example"
-            schemes: [HTTPS],
+        option (google.api.http) = { 
+            get:"/example"  
         };
       };
 
-      rpc CreateExample(CreateExampleReq) returns(Example){
-        option (google.api.http) = {
-            post:"/example"
+    // 创建
+    rpc CreateExample(CreateExampleReq) returns(Example){
+        option (google.api.http) = { 
+            post:"/example"  
             body:"*"
         };
-        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            summary: "创建示例"
-            description: "创建示例"
-            tags: "example"
-            schemes: [HTTPS],
-        };
-      };
+    };
 
-      rpc UpdateExample(UpdateExampleReq) returns(CheckResponse){
-        option (google.api.http) = {
-            put:"/example"
+    // 更新
+    rpc UpdateExample(UpdateExampleReq) returns(CheckResponse){
+        option (google.api.http) = { 
+            put:"/example"  
             body:"*"
         };
-        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            summary: "更新示例"
-            description: "更新示例"
-            tags: "example"
-            schemes: [HTTPS],
-        };
-      };
+    };
 
-      rpc DeleteExample(DeleteExampleReq) returns(CheckResponse){
-        option (google.api.http) = {
-            delete:"/example"
+    // 删除
+    rpc DeleteExample(DeleteExampleReq) returns(CheckResponse){
+        option (google.api.http) = { 
+            delete:"/example"  
         };
-        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            summary: "删除示例"
-            description: "删除示例"
-            tags: "example"
-            schemes: [HTTPS],
-        };
-      };
+    };
 }
 
+// 请求 - 更新
 message UpdateExampleReq {
+    // 主键id
     int64 id = 1 [
-        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-            description: "id",
-        },
         (validate.rules).int64.gt = 0
     ];
+    // 名称
     string name = 2 [
-        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-            description: "名称",
-        },
         (validate.rules).string = {min_len: 1, max_len: 60}
     ];
-    bool status = 3 [
-        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-            description: "状态 0关闭 1开启",
-        }
-    ];
-}
-
-message CreateExampleReq {
-    string name = 1 [
-        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-            description: "名称",
-        },
-        (validate.rules).string = {min_len: 1, max_len: 60}
-    ];
-    bool status =2 [
-        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-            description: "状态 0关闭 1开启",
-        }
-    ];
-}
-
-message Example {
-    int64 id = 1;
-    string name = 2;
+    // 状态
     bool status = 3;
+}
+
+// 请求 - 创建
+message CreateExampleReq {
+    // 名称
+    string name = 1 [
+        (validate.rules).string = {min_len: 1, max_len: 60}
+    ];
+    bool status =2;
+}
+
+// 响应 - 示例信息
+message Example {
+    // 主键id
+    int64 id = 1;
+    // 名称
+    string name = 2;
+    // 状态
+    bool status = 3;
+    // 创建时间
     google.protobuf.Timestamp created_at = 4;
+    // 更新时间
     google.protobuf.Timestamp updated_at = 5;
 }
 
+// 响应 - 分页
 message  GetExampleListPageRes {
+    // 总数
     int64 total = 1;
+    // 列表
     repeated Example list = 2;
 }
 
-
+// 请求 - 分页列表
 message  GetExampleListReq {
+    // 主键id
     int64 page = 1 [
-        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-            description: "页码",
-        },
         (validate.rules).int64.gt = 0
     ];
 
+    // 页记录数
     int64 pageSize = 2 [
-        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-            description: "页记录数",
-        },
         (validate.rules).int64.gt = 0
     ];
 
-    string name = 3[
-        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-            description: "名称",
-        }
-    ];
+    // 名称
+    string name = 3;
 }
 
+// 请求 - 删除
 message DeleteExampleReq {
+    // 主键id
     int64 id = 1;
 }
 
+// 响应 - 检查是否处理成功
 message CheckResponse {
     bool success = 1;
 }
