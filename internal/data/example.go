@@ -39,8 +39,8 @@ func NewExampleRepo(data *Data, logger log.Logger) biz.ExampleRepo {
 // searchParam 搜索条件
 func (repo ExampleRepo) searchParam(params map[string]interface{}) *gorm.DB {
 	conn := repo.data.db.Model(&ExampleEntity{})
-	if ID, ok := params["ID"]; ok && ID.(int64) != 0 {
-		conn = conn.Where("ID = ?", ID)
+	if Id, ok := params["id"]; ok && Id.(int64) != 0 {
+		conn = conn.Where("id = ?", Id)
 	}
 	if name, ok := params["name"]; ok && name.(string) != "" {
 		conn = conn.Where("name LIKE ?", "%"+name.(string)+"%")
@@ -73,7 +73,7 @@ func (repo ExampleRepo) GetExampleByParams(params map[string]interface{}) (recor
 
 func (repo ExampleRepo) CreateExample(ctx context.Context, domain *domain.Example) (*domain.Example, error) {
 	entity := &ExampleEntity{}
-	entity.ID = domain.ID
+	entity.Id = domain.Id
 	entity.Name = domain.Name
 	entity.Name = domain.Name
 	if err := repo.data.db.Model(entity).Create(entity).Error; err != nil {
@@ -84,16 +84,16 @@ func (repo ExampleRepo) CreateExample(ctx context.Context, domain *domain.Exampl
 }
 
 func (repo ExampleRepo) UpdateExample(ctx context.Context, domain *domain.Example) error {
-	// 根据ID查找记录
+	// 根据Id查找记录
 	record, err := repo.GetExampleByParams(map[string]interface{}{
-		"ID": domain.ID,
+		"id": domain.Id,
 	})
 	if err != nil {
 		return err
 	}
 	// 更新字段
 	record.Name = domain.Name
-	if err := repo.data.db.Model(&record).Where("ID = ?", record.ID).Save(&record).Error; err != nil {
+	if err := repo.data.db.Model(&record).Where("id = ?", record.Id).Save(&record).Error; err != nil {
 		return errors.New(http.StatusInternalServerError, "SYSTEM_ERROR", err.Error())
 	}
 
@@ -101,7 +101,7 @@ func (repo ExampleRepo) UpdateExample(ctx context.Context, domain *domain.Exampl
 }
 
 func (repo ExampleRepo) GetExample(ctx context.Context, params map[string]interface{}) (*domain.Example, error) {
-	// 根据ID查找记录
+	// 根据Id查找记录
 	record, err := repo.GetExampleByParams(params)
 	if err != nil {
 		return nil, err
@@ -130,24 +130,24 @@ func (repo ExampleRepo) ListExample(ctx context.Context, page, pageSize int64, p
 }
 
 func (repo ExampleRepo) DeleteExample(ctx context.Context, domain *domain.Example) error {
-	// 根据ID查找记录
+	// 根据Id查找记录
 	record, err := repo.GetExampleByParams(map[string]interface{}{
-		"ID": domain.ID,
+		"id": domain.Id,
 	})
 	if err != nil {
 		return err
 	}
-	if domain.ID != record.ID {
+	if domain.Id != record.Id {
 		return errors.New(http.StatusBadRequest, "RECORD_NOT_FOUND", "数据不存在")
 	}
-	return repo.data.db.Model(&record).Where("ID = ?", domain.ID).UpdateColumn("deleted_at", timeHelper.GetCurrentYMDHIS()).Error
+	return repo.data.db.Model(&record).Where("Id = ?", domain.Id).UpdateColumn("deleted_at", timeHelper.GetCurrentYMDHIS()).Error
 }
 
-func (repo ExampleRepo) RecoverExample(ctx context.Context, ID int64) error {
-	if ID == 0 {
+func (repo ExampleRepo) RecoverExample(ctx context.Context, Id int64) error {
+	if Id == 0 {
 		return errors.New(http.StatusBadRequest, "MISSING_CONDITION", "缺少搜索条件")
 	}
-	err := repo.data.db.Model(ExampleEntity{}).Where("ID = ?", ID).UpdateColumn("deleted_at", "").Error
+	err := repo.data.db.Model(ExampleEntity{}).Where("Id = ?", Id).UpdateColumn("deleted_at", "").Error
 	if err != nil {
 		return errors.New(http.StatusInternalServerError, "SYSTEM_ERROR", err.Error())
 	}
@@ -156,7 +156,7 @@ func (repo ExampleRepo) RecoverExample(ctx context.Context, ID int64) error {
 
 func toDomainExample(example *ExampleEntity) *domain.Example {
 	return &domain.Example{
-		ID:        example.ID,
+		Id:        example.Id,
 		Name:      example.Name,
 		CreatedAt: example.CreatedAt,
 		UpdatedAt: example.UpdatedAt,

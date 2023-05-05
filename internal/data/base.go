@@ -7,7 +7,7 @@ import (
 )
 
 type BaseFields struct {
-	ID        int64          `gorm:"primarykey;type:int"`
+	Id        int64          `gorm:"primarykey;type:int"`
 	CreatedAt time.Time      `gorm:"column:created_at;not null;"`
 	UpdatedAt time.Time      `gorm:"column:updated_at;not null;"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at"`

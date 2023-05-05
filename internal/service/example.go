@@ -54,7 +54,7 @@ func (s *ExampleService) CreateExample(ctx context.Context, reqData *exampleV1.C
 
 func (s *ExampleService) UpdateExample(ctx context.Context, reqData *exampleV1.UpdateExampleReq) (*exampleV1.CheckResponse, error) {
 	err := s.exampleUsecase.UpdateExample(ctx, &domain.Example{
-		ID:   reqData.Id,
+		Id:   reqData.Id,
 		Name: reqData.Name,
 	})
 	if err != nil {
@@ -65,7 +65,7 @@ func (s *ExampleService) UpdateExample(ctx context.Context, reqData *exampleV1.U
 
 func (s *ExampleService) DeleteExample(ctx context.Context, reqData *exampleV1.DeleteExampleReq) (*exampleV1.CheckResponse, error) {
 	err := s.exampleUsecase.DeleteExample(ctx, &domain.Example{
-		ID: reqData.Id,
+		Id: reqData.Id,
 	})
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (s *ExampleService) DeleteExample(ctx context.Context, reqData *exampleV1.D
 
 func toDomainExample(example *domain.Example) *exampleV1.Example {
 	return &exampleV1.Example{
-		Id:        example.ID,
+		Id:        example.Id,
 		Name:      example.Name,
 		Status:    example.Status,
 		CreatedAt: pbhelper.TimeToProtoTimestamp(example.CreatedAt),
