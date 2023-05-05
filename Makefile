@@ -87,9 +87,9 @@ help:
 
 .PHONY: initProject
 initProject:
-# 初始化项目，将package改为project, 即 module repo.sweet7.com/$(PROJECT)
+# 初始化项目，将package改为project, 即 module github.com/ZQCard/$(PROJECT)
 	@echo "PROJECT=$(PROJECT)"
-	@grep  -rl $(PROJECT) ./ | xargs sed -i 's/$(PROJECT)/repo.sweet7.com\/$(PROJECT)/g'
+	@grep  -rl $(PROJECT) ./ | xargs sed -i 's/$(PROJECT)/github.com\/ZQCard\/$(PROJECT)/g'
 
 .PHONY: initNewService
 initNewService:
