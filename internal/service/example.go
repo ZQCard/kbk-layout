@@ -8,9 +8,7 @@ import (
 	exampleV1 "github.com/ZQCard/kratos-base-layout/api/example/v1"
 	"github.com/ZQCard/kratos-base-layout/internal/biz"
 	"github.com/ZQCard/kratos-base-layout/internal/domain"
-	paginationhelper "github.com/ZQCard/kratos-base-layout/pkg/utils/paginationHelper"
 	pbhelper "github.com/ZQCard/kratos-base-layout/pkg/utils/pbHelper"
-	"github.com/ZQCard/kratos-base-layout/pkg/utils/typeConvert"
 )
 
 type ExampleService struct {
@@ -27,9 +25,8 @@ func NewExampleService(exampleUsecase *biz.ExampleUsecase, logger log.Logger) *E
 }
 
 func (s *ExampleService) GetExampleList(ctx context.Context, reqData *exampleV1.GetExampleListReq) (*exampleV1.GetExampleListPageRes, error) {
-	params := typeConvert.StructToMap(reqData)
-	page, pageSize := paginationhelper.Pagination(params)
-	list, count, err := s.exampleUsecase.ListExample(ctx, page, pageSize, params)
+	params := make(map[string]interface{})
+	list, count, err := s.exampleUsecase.ListExample(ctx, reqData.Page, reqData.PageSize, params)
 	if err != nil {
 		return nil, err
 	}

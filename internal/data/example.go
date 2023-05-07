@@ -47,11 +47,11 @@ func (repo ExampleRepo) searchParam(params map[string]interface{}) *gorm.DB {
 	}
 	// 开始时间
 	if start, ok := params["created_at_start"]; ok && start.(string) != "" {
-		conn = conn.Where("created_at >= ", start.(string))
+		conn = conn.Where("created_at >= ?", start.(string)+" 00:00:00")
 	}
 	// 结束时间
 	if end, ok := params["created_at_end"]; ok && end.(string) != "" {
-		conn = conn.Where("created_at <= ", end.(string))
+		conn = conn.Where("created_at <= ?", end.(string)+" 23:59:59")
 	}
 
 	return conn
