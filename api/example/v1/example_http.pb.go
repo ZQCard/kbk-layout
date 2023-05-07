@@ -4,7 +4,7 @@
 // - protoc             v4.23.0--rc1
 // source: api/example/v1/example.proto
 
-package store
+package example
 
 import (
 	context "context"
@@ -19,10 +19,10 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationExampleServiceCreateExample = "/store.ExampleService/CreateExample"
-const OperationExampleServiceDeleteExample = "/store.ExampleService/DeleteExample"
-const OperationExampleServiceGetExampleList = "/store.ExampleService/GetExampleList"
-const OperationExampleServiceUpdateExample = "/store.ExampleService/UpdateExample"
+const OperationExampleServiceCreateExample = "/example.v1.ExampleService/CreateExample"
+const OperationExampleServiceDeleteExample = "/example.v1.ExampleService/DeleteExample"
+const OperationExampleServiceGetExampleList = "/example.v1.ExampleService/GetExampleList"
+const OperationExampleServiceUpdateExample = "/example.v1.ExampleService/UpdateExample"
 
 type ExampleServiceHTTPServer interface {
 	CreateExample(context.Context, *CreateExampleReq) (*Example, error)

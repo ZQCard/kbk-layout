@@ -4,7 +4,7 @@
 // - protoc             v4.23.0--rc1
 // source: api/example/v1/example.proto
 
-package store
+package example
 
 import (
 	context "context"
@@ -42,7 +42,7 @@ func NewExampleServiceClient(cc grpc.ClientConnInterface) ExampleServiceClient {
 
 func (c *exampleServiceClient) GetExampleList(ctx context.Context, in *GetExampleListReq, opts ...grpc.CallOption) (*GetExampleListPageRes, error) {
 	out := new(GetExampleListPageRes)
-	err := c.cc.Invoke(ctx, "/store.ExampleService/GetExampleList", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/example.v1.ExampleService/GetExampleList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *exampleServiceClient) GetExampleList(ctx context.Context, in *GetExampl
 
 func (c *exampleServiceClient) CreateExample(ctx context.Context, in *CreateExampleReq, opts ...grpc.CallOption) (*Example, error) {
 	out := new(Example)
-	err := c.cc.Invoke(ctx, "/store.ExampleService/CreateExample", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/example.v1.ExampleService/CreateExample", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (c *exampleServiceClient) CreateExample(ctx context.Context, in *CreateExam
 
 func (c *exampleServiceClient) UpdateExample(ctx context.Context, in *UpdateExampleReq, opts ...grpc.CallOption) (*CheckResponse, error) {
 	out := new(CheckResponse)
-	err := c.cc.Invoke(ctx, "/store.ExampleService/UpdateExample", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/example.v1.ExampleService/UpdateExample", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (c *exampleServiceClient) UpdateExample(ctx context.Context, in *UpdateExam
 
 func (c *exampleServiceClient) DeleteExample(ctx context.Context, in *DeleteExampleReq, opts ...grpc.CallOption) (*CheckResponse, error) {
 	out := new(CheckResponse)
-	err := c.cc.Invoke(ctx, "/store.ExampleService/DeleteExample", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/example.v1.ExampleService/DeleteExample", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func _ExampleService_GetExampleList_Handler(srv interface{}, ctx context.Context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/store.ExampleService/GetExampleList",
+		FullMethod: "/example.v1.ExampleService/GetExampleList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ExampleServiceServer).GetExampleList(ctx, req.(*GetExampleListReq))
@@ -148,7 +148,7 @@ func _ExampleService_CreateExample_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/store.ExampleService/CreateExample",
+		FullMethod: "/example.v1.ExampleService/CreateExample",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ExampleServiceServer).CreateExample(ctx, req.(*CreateExampleReq))
@@ -166,7 +166,7 @@ func _ExampleService_UpdateExample_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/store.ExampleService/UpdateExample",
+		FullMethod: "/example.v1.ExampleService/UpdateExample",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ExampleServiceServer).UpdateExample(ctx, req.(*UpdateExampleReq))
@@ -184,7 +184,7 @@ func _ExampleService_DeleteExample_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/store.ExampleService/DeleteExample",
+		FullMethod: "/example.v1.ExampleService/DeleteExample",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ExampleServiceServer).DeleteExample(ctx, req.(*DeleteExampleReq))
@@ -196,7 +196,7 @@ func _ExampleService_DeleteExample_Handler(srv interface{}, ctx context.Context,
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ExampleService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "store.ExampleService",
+	ServiceName: "example.v1.ExampleService",
 	HandlerType: (*ExampleServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

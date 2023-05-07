@@ -6,8 +6,8 @@ info:
     title: 示例服务
     description: 示例服务
     contact:
-        name: qi.zhou
-    version: 2.0.1
+        name: your name
+    version: 0.0.1
 paths:
     /example:
         get:

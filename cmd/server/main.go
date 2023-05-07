@@ -80,7 +80,9 @@ func main() {
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
-
+	// 生成服务名称, 服务发现
+	Name = bc.Service.Name
+	Version = bc.Service.Version
 	var rc conf.Registry
 	if err := c.Scan(&rc); err != nil {
 		panic(err)
