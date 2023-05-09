@@ -33,7 +33,7 @@ func (s *ExampleService) GetExampleList(ctx context.Context, reqData *exampleV1.
 	res := &exampleV1.GetExampleListPageRes{}
 	res.Total = int64(count)
 	for _, v := range list {
-		res.List = append(res.List, toDomainExample(v))
+		res.List = append(res.List, toPbExample(v))
 	}
 	return res, nil
 }
@@ -46,7 +46,7 @@ func (s *ExampleService) CreateExample(ctx context.Context, reqData *exampleV1.C
 	if err != nil {
 		return nil, err
 	}
-	return toDomainExample(res), nil
+	return toPbExample(res), nil
 }
 
 func (s *ExampleService) UpdateExample(ctx context.Context, reqData *exampleV1.UpdateExampleReq) (*exampleV1.CheckResponse, error) {
@@ -68,6 +68,16 @@ func (s *ExampleService) DeleteExample(ctx context.Context, reqData *exampleV1.D
 		return nil, err
 	}
 	return &exampleV1.CheckResponse{Success: true}, nil
+}
+
+func toPbExample(example *domain.Example) *exampleV1.Example {
+	return &exampleV1.Example{
+		Id:        example.Id,
+		Name:      example.Name,
+		Status:    example.Status,
+		CreatedAt: pbhelper.TimeToProtoTimestamp(example.CreatedAt),
+		UpdatedAt: pbhelper.TimeToProtoTimestamp(example.UpdatedAt),
+	}
 }
 
 func toDomainExample(example *domain.Example) *exampleV1.Example {
