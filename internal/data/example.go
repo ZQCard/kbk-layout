@@ -145,11 +145,11 @@ func (repo ExampleRepo) DeleteExample(ctx context.Context, domain *domain.Exampl
 	return nil
 }
 
-func (repo ExampleRepo) RecoverExample(ctx context.Context, Id int64) error {
-	if Id == 0 {
+func (repo ExampleRepo) RecoverExample(ctx context.Context, domain *domain.Example) error {
+	if domain.Id == 0 {
 		return errors.BadRequest("MISSING_CONDITION", "缺少搜索条件")
 	}
-	if err := repo.data.db.Model(ExampleEntity{}).Where("Id = ?", Id).UpdateColumn("deleted_at", "").Error; err != nil {
+	if err := repo.data.db.Model(ExampleEntity{}).Where("Id = ?", domain.Id).UpdateColumn("deleted_at", "").Error; err != nil {
 		return errors.New(http.StatusInternalServerError, "SYSTEM ERROR", err.Error())
 	}
 	return nil

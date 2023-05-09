@@ -29,7 +29,9 @@ type ExampleServiceClient interface {
 	// 更新
 	UpdateExample(ctx context.Context, in *UpdateExampleReq, opts ...grpc.CallOption) (*CheckResponse, error)
 	// 删除
-	DeleteExample(ctx context.Context, in *DeleteExampleReq, opts ...grpc.CallOption) (*CheckResponse, error)
+	DeleteExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*CheckResponse, error)
+	// 恢复
+	RecoverExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*CheckResponse, error)
 }
 
 type exampleServiceClient struct {
@@ -67,9 +69,18 @@ func (c *exampleServiceClient) UpdateExample(ctx context.Context, in *UpdateExam
 	return out, nil
 }
 
-func (c *exampleServiceClient) DeleteExample(ctx context.Context, in *DeleteExampleReq, opts ...grpc.CallOption) (*CheckResponse, error) {
+func (c *exampleServiceClient) DeleteExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*CheckResponse, error) {
 	out := new(CheckResponse)
 	err := c.cc.Invoke(ctx, "/example.v1.ExampleService/DeleteExample", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *exampleServiceClient) RecoverExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*CheckResponse, error) {
+	out := new(CheckResponse)
+	err := c.cc.Invoke(ctx, "/example.v1.ExampleService/RecoverExample", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +98,9 @@ type ExampleServiceServer interface {
 	// 更新
 	UpdateExample(context.Context, *UpdateExampleReq) (*CheckResponse, error)
 	// 删除
-	DeleteExample(context.Context, *DeleteExampleReq) (*CheckResponse, error)
+	DeleteExample(context.Context, *ExampleIdReq) (*CheckResponse, error)
+	// 恢复
+	RecoverExample(context.Context, *ExampleIdReq) (*CheckResponse, error)
 	mustEmbedUnimplementedExampleServiceServer()
 }
 
@@ -104,8 +117,11 @@ func (UnimplementedExampleServiceServer) CreateExample(context.Context, *CreateE
 func (UnimplementedExampleServiceServer) UpdateExample(context.Context, *UpdateExampleReq) (*CheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateExample not implemented")
 }
-func (UnimplementedExampleServiceServer) DeleteExample(context.Context, *DeleteExampleReq) (*CheckResponse, error) {
+func (UnimplementedExampleServiceServer) DeleteExample(context.Context, *ExampleIdReq) (*CheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteExample not implemented")
+}
+func (UnimplementedExampleServiceServer) RecoverExample(context.Context, *ExampleIdReq) (*CheckResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RecoverExample not implemented")
 }
 func (UnimplementedExampleServiceServer) mustEmbedUnimplementedExampleServiceServer() {}
 
@@ -175,7 +191,7 @@ func _ExampleService_UpdateExample_Handler(srv interface{}, ctx context.Context,
 }
 
 func _ExampleService_DeleteExample_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteExampleReq)
+	in := new(ExampleIdReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -187,7 +203,25 @@ func _ExampleService_DeleteExample_Handler(srv interface{}, ctx context.Context,
 		FullMethod: "/example.v1.ExampleService/DeleteExample",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ExampleServiceServer).DeleteExample(ctx, req.(*DeleteExampleReq))
+		return srv.(ExampleServiceServer).DeleteExample(ctx, req.(*ExampleIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ExampleService_RecoverExample_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExampleIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExampleServiceServer).RecoverExample(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/example.v1.ExampleService/RecoverExample",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExampleServiceServer).RecoverExample(ctx, req.(*ExampleIdReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -214,6 +248,10 @@ var ExampleService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteExample",
 			Handler:    _ExampleService_DeleteExample_Handler,
+		},
+		{
+			MethodName: "RecoverExample",
+			Handler:    _ExampleService_RecoverExample_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

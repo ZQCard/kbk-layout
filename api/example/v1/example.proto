@@ -53,9 +53,17 @@ service ExampleService {
     };
 
     // 删除
-    rpc DeleteExample(DeleteExampleReq) returns(CheckResponse){
+    rpc DeleteExample(ExampleIdReq) returns(CheckResponse){
         option (google.api.http) = { 
             delete:"/example"  
+        };
+    };
+
+    // 恢复
+    rpc RecoverExample(ExampleIdReq) returns(CheckResponse){
+        option (google.api.http) = { 
+            patch:"/example"  
+            body:"*"
         };
     };
 }
@@ -122,7 +130,7 @@ message  GetExampleListReq {
 }
 
 // 请求 - 删除
-message DeleteExampleReq {
+message ExampleIdReq {
     // 主键id
     int64 id = 1;
 }

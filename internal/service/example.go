@@ -60,8 +60,18 @@ func (s *ExampleService) UpdateExample(ctx context.Context, reqData *exampleV1.U
 	return &exampleV1.CheckResponse{Success: true}, nil
 }
 
-func (s *ExampleService) DeleteExample(ctx context.Context, reqData *exampleV1.DeleteExampleReq) (*exampleV1.CheckResponse, error) {
+func (s *ExampleService) DeleteExample(ctx context.Context, reqData *exampleV1.ExampleIdReq) (*exampleV1.CheckResponse, error) {
 	err := s.exampleUsecase.DeleteExample(ctx, &domain.Example{
+		Id: reqData.Id,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &exampleV1.CheckResponse{Success: true}, nil
+}
+
+func (s *ExampleService) RecoverExample(ctx context.Context, reqData *exampleV1.ExampleIdReq) (*exampleV1.CheckResponse, error) {
+	err := s.exampleUsecase.RecoverExample(ctx, &domain.Example{
 		Id: reqData.Id,
 	})
 	if err != nil {

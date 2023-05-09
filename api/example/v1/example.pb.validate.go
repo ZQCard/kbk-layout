@@ -698,22 +698,22 @@ var _ interface {
 	ErrorName() string
 } = GetExampleListReqValidationError{}
 
-// Validate checks the field values on DeleteExampleReq with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *DeleteExampleReq) Validate() error {
+// Validate checks the field values on ExampleIdReq with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExampleIdReq) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on DeleteExampleReq with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// DeleteExampleReqMultiError, or nil if none found.
-func (m *DeleteExampleReq) ValidateAll() error {
+// ValidateAll checks the field values on ExampleIdReq with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ExampleIdReqMultiError, or
+// nil if none found.
+func (m *ExampleIdReq) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *DeleteExampleReq) validate(all bool) error {
+func (m *ExampleIdReq) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -723,19 +723,18 @@ func (m *DeleteExampleReq) validate(all bool) error {
 	// no validation rules for Id
 
 	if len(errors) > 0 {
-		return DeleteExampleReqMultiError(errors)
+		return ExampleIdReqMultiError(errors)
 	}
 
 	return nil
 }
 
-// DeleteExampleReqMultiError is an error wrapping multiple validation errors
-// returned by DeleteExampleReq.ValidateAll() if the designated constraints
-// aren't met.
-type DeleteExampleReqMultiError []error
+// ExampleIdReqMultiError is an error wrapping multiple validation errors
+// returned by ExampleIdReq.ValidateAll() if the designated constraints aren't met.
+type ExampleIdReqMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m DeleteExampleReqMultiError) Error() string {
+func (m ExampleIdReqMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -744,11 +743,11 @@ func (m DeleteExampleReqMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m DeleteExampleReqMultiError) AllErrors() []error { return m }
+func (m ExampleIdReqMultiError) AllErrors() []error { return m }
 
-// DeleteExampleReqValidationError is the validation error returned by
-// DeleteExampleReq.Validate if the designated constraints aren't met.
-type DeleteExampleReqValidationError struct {
+// ExampleIdReqValidationError is the validation error returned by
+// ExampleIdReq.Validate if the designated constraints aren't met.
+type ExampleIdReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -756,22 +755,22 @@ type DeleteExampleReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e DeleteExampleReqValidationError) Field() string { return e.field }
+func (e ExampleIdReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e DeleteExampleReqValidationError) Reason() string { return e.reason }
+func (e ExampleIdReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e DeleteExampleReqValidationError) Cause() error { return e.cause }
+func (e ExampleIdReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e DeleteExampleReqValidationError) Key() bool { return e.key }
+func (e ExampleIdReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e DeleteExampleReqValidationError) ErrorName() string { return "DeleteExampleReqValidationError" }
+func (e ExampleIdReqValidationError) ErrorName() string { return "ExampleIdReqValidationError" }
 
 // Error satisfies the builtin error interface
-func (e DeleteExampleReqValidationError) Error() string {
+func (e ExampleIdReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -783,14 +782,14 @@ func (e DeleteExampleReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sDeleteExampleReq.%s: %s%s",
+		"invalid %sExampleIdReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = DeleteExampleReqValidationError{}
+var _ error = ExampleIdReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -798,7 +797,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = DeleteExampleReqValidationError{}
+} = ExampleIdReqValidationError{}
 
 // Validate checks the field values on CheckResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, the first

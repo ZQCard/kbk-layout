@@ -13,6 +13,7 @@ type ExampleRepo interface {
 	CreateExample(ctx context.Context, example *domain.Example) (*domain.Example, error)
 	UpdateExample(ctx context.Context, example *domain.Example) error
 	DeleteExample(ctx context.Context, example *domain.Example) error
+	RecoverExample(ctx context.Context, example *domain.Example) error
 }
 
 type ExampleUsecase struct {
@@ -38,4 +39,8 @@ func (suc *ExampleUsecase) UpdateExample(ctx context.Context, example *domain.Ex
 
 func (suc *ExampleUsecase) DeleteExample(ctx context.Context, example *domain.Example) error {
 	return suc.repo.DeleteExample(ctx, example)
+}
+
+func (suc *ExampleUsecase) RecoverExample(ctx context.Context, example *domain.Example) error {
+	return suc.repo.RecoverExample(ctx, example)
 }

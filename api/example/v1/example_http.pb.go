@@ -22,12 +22,14 @@ const _ = http.SupportPackageIsVersion1
 const OperationExampleServiceCreateExample = "/example.v1.ExampleService/CreateExample"
 const OperationExampleServiceDeleteExample = "/example.v1.ExampleService/DeleteExample"
 const OperationExampleServiceGetExampleList = "/example.v1.ExampleService/GetExampleList"
+const OperationExampleServiceRecoverExample = "/example.v1.ExampleService/RecoverExample"
 const OperationExampleServiceUpdateExample = "/example.v1.ExampleService/UpdateExample"
 
 type ExampleServiceHTTPServer interface {
 	CreateExample(context.Context, *CreateExampleReq) (*Example, error)
-	DeleteExample(context.Context, *DeleteExampleReq) (*CheckResponse, error)
+	DeleteExample(context.Context, *ExampleIdReq) (*CheckResponse, error)
 	GetExampleList(context.Context, *GetExampleListReq) (*GetExampleListPageRes, error)
+	RecoverExample(context.Context, *ExampleIdReq) (*CheckResponse, error)
 	UpdateExample(context.Context, *UpdateExampleReq) (*CheckResponse, error)
 }
 
@@ -37,6 +39,7 @@ func RegisterExampleServiceHTTPServer(s *http.Server, srv ExampleServiceHTTPServ
 	r.POST("/example", _ExampleService_CreateExample0_HTTP_Handler(srv))
 	r.PUT("/example", _ExampleService_UpdateExample0_HTTP_Handler(srv))
 	r.DELETE("/example", _ExampleService_DeleteExample0_HTTP_Handler(srv))
+	r.PATCH("/example", _ExampleService_RecoverExample0_HTTP_Handler(srv))
 }
 
 func _ExampleService_GetExampleList0_HTTP_Handler(srv ExampleServiceHTTPServer) func(ctx http.Context) error {
@@ -98,13 +101,32 @@ func _ExampleService_UpdateExample0_HTTP_Handler(srv ExampleServiceHTTPServer) f
 
 func _ExampleService_DeleteExample0_HTTP_Handler(srv ExampleServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in DeleteExampleReq
+		var in ExampleIdReq
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, OperationExampleServiceDeleteExample)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.DeleteExample(ctx, req.(*DeleteExampleReq))
+			return srv.DeleteExample(ctx, req.(*ExampleIdReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*CheckResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _ExampleService_RecoverExample0_HTTP_Handler(srv ExampleServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ExampleIdReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationExampleServiceRecoverExample)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.RecoverExample(ctx, req.(*ExampleIdReq))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -117,8 +139,9 @@ func _ExampleService_DeleteExample0_HTTP_Handler(srv ExampleServiceHTTPServer) f
 
 type ExampleServiceHTTPClient interface {
 	CreateExample(ctx context.Context, req *CreateExampleReq, opts ...http.CallOption) (rsp *Example, err error)
-	DeleteExample(ctx context.Context, req *DeleteExampleReq, opts ...http.CallOption) (rsp *CheckResponse, err error)
+	DeleteExample(ctx context.Context, req *ExampleIdReq, opts ...http.CallOption) (rsp *CheckResponse, err error)
 	GetExampleList(ctx context.Context, req *GetExampleListReq, opts ...http.CallOption) (rsp *GetExampleListPageRes, err error)
+	RecoverExample(ctx context.Context, req *ExampleIdReq, opts ...http.CallOption) (rsp *CheckResponse, err error)
 	UpdateExample(ctx context.Context, req *UpdateExampleReq, opts ...http.CallOption) (rsp *CheckResponse, err error)
 }
 
@@ -143,7 +166,7 @@ func (c *ExampleServiceHTTPClientImpl) CreateExample(ctx context.Context, in *Cr
 	return &out, err
 }
 
-func (c *ExampleServiceHTTPClientImpl) DeleteExample(ctx context.Context, in *DeleteExampleReq, opts ...http.CallOption) (*CheckResponse, error) {
+func (c *ExampleServiceHTTPClientImpl) DeleteExample(ctx context.Context, in *ExampleIdReq, opts ...http.CallOption) (*CheckResponse, error) {
 	var out CheckResponse
 	pattern := "/example"
 	path := binding.EncodeURL(pattern, in, true)
@@ -163,6 +186,19 @@ func (c *ExampleServiceHTTPClientImpl) GetExampleList(ctx context.Context, in *G
 	opts = append(opts, http.Operation(OperationExampleServiceGetExampleList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *ExampleServiceHTTPClientImpl) RecoverExample(ctx context.Context, in *ExampleIdReq, opts ...http.CallOption) (*CheckResponse, error) {
+	var out CheckResponse
+	pattern := "/example"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationExampleServiceRecoverExample))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PATCH", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
