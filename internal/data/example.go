@@ -15,8 +15,8 @@ import (
 
 type ExampleEntity struct {
 	BaseFields
-	Name   string `gorm:"type:varchar(255);not null;unique"`
-	Status bool   `gorm:"not null"`
+	Name   string `gorm:"type:varchar(255);not null;unique;comment:名称"`
+	Status bool   `gorm:"not null;comment:状态0冻结1正常"`
 }
 
 func (ExampleEntity) TableName() string {

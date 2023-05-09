@@ -7,10 +7,10 @@ import (
 )
 
 type BaseFields struct {
-	Id        int64          `gorm:"primarykey;type:int"`
-	CreatedAt time.Time      `gorm:"column:created_at;not null;"`
-	UpdatedAt time.Time      `gorm:"column:updated_at;not null;"`
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at"`
+	Id        int64          `gorm:"primarykey;type:int;comment:主键id"`
+	CreatedAt time.Time      `gorm:"column:created_at;not null;comment:创建时间"`
+	UpdatedAt time.Time      `gorm:"column:updated_at;not null;comment:更新时间"`
+	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;comment:删除时间"`
 }
 
 // Paginate 分页
