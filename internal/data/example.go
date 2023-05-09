@@ -139,7 +139,7 @@ func (repo ExampleRepo) DeleteExample(ctx context.Context, domain *domain.Exampl
 	if domain.Id != record.Id {
 		return errors.BadRequest("RECORD_NOT_FOUND", "数据不存在")
 	}
-	if err := repo.data.db.Model(&record).Where("Id = ?", domain.Id).Delete(&ExampleEntity{}).Error; err != nil {
+	if err := repo.data.db.Where("Id = ?", domain.Id).Delete(&ExampleEntity{}).Error; err != nil {
 		return errors.InternalServer("SYSTEM ERROR", err.Error())
 	}
 	return nil
