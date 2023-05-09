@@ -60,7 +60,7 @@ func (repo ExampleRepo) GetExampleByParams(params map[string]interface{}) (recor
 		return &ExampleEntity{}, errors.BadRequest("MISSING_CONDITION", "缺少搜索条件")
 	}
 	conn := repo.searchParam(params)
-	if err = conn.First(record).Error; err != nil {
+	if err = conn.First(&record).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return &ExampleEntity{}, errors.BadRequest("RECORD_NOT_FOUND", "数据不存在")
 		}
