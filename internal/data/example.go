@@ -75,7 +75,7 @@ func (repo ExampleRepo) CreateExample(ctx context.Context, domain *domain.Exampl
 	entity := &ExampleEntity{}
 	entity.Id = domain.Id
 	entity.Name = domain.Name
-	entity.Name = domain.Name
+	entity.Status = domain.Status
 	if err := repo.data.db.Model(entity).Create(entity).Error; err != nil {
 		return nil, errors.New(http.StatusInternalServerError, "SYSTEM_ERROR", err.Error())
 	}
@@ -93,6 +93,7 @@ func (repo ExampleRepo) UpdateExample(ctx context.Context, domain *domain.Exampl
 	}
 	// 更新字段
 	record.Name = domain.Name
+	record.Status = domain.Status
 	if err := repo.data.db.Model(&record).Where("id = ?", record.Id).Save(&record).Error; err != nil {
 		return errors.New(http.StatusInternalServerError, "SYSTEM_ERROR", err.Error())
 	}
