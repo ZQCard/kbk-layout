@@ -34,7 +34,14 @@ service ExampleService {
         option (google.api.http) = { 
             get:"/example"  
         };
-      };
+    };
+
+    // 详情
+    rpc GetExample(ExampleIdReq) returns(Example){
+        option (google.api.http) = { 
+            get:"/example/{id}"  
+        };
+    };  
 
     // 创建
     rpc CreateExample(CreateExampleReq) returns(Example){
@@ -129,7 +136,7 @@ message  GetExampleListReq {
     string name = 3;
 }
 
-// 请求 - 删除
+// 请求 - 主键id
 message ExampleIdReq {
     // 主键id
     int64 id = 1;

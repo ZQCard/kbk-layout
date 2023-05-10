@@ -10,6 +10,7 @@ import (
 
 type ExampleRepo interface {
 	ListExample(ctx context.Context, page, pageSize int64, params map[string]interface{}) ([]*domain.Example, int64, error)
+	GetExample(ctx context.Context, params map[string]interface{}) (*domain.Example, error)
 	CreateExample(ctx context.Context, example *domain.Example) (*domain.Example, error)
 	UpdateExample(ctx context.Context, example *domain.Example) error
 	DeleteExample(ctx context.Context, example *domain.Example) error
@@ -27,6 +28,12 @@ func NewExampleUsecase(repo ExampleRepo, logger log.Logger) *ExampleUsecase {
 
 func (suc *ExampleUsecase) ListExample(ctx context.Context, page, pageSize int64, params map[string]interface{}) ([]*domain.Example, int64, error) {
 	return suc.repo.ListExample(ctx, page, pageSize, params)
+}
+
+func (suc *ExampleUsecase) GetExample(ctx context.Context, example *domain.Example) (*domain.Example, error) {
+	params := make(map[string]interface{})
+	params["id"] = example.Id
+	return suc.repo.GetExample(ctx, params)
 }
 
 func (suc *ExampleUsecase) CreateExample(ctx context.Context, example *domain.Example) (*domain.Example, error) {

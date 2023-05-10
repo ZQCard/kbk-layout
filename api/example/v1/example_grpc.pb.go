@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.23.0--rc1
-// source: api/example/v1/example.proto
+// source: example/v1/example.proto
 
 package example
 
@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type ExampleServiceClient interface {
 	// 列表
 	GetExampleList(ctx context.Context, in *GetExampleListReq, opts ...grpc.CallOption) (*GetExampleListPageRes, error)
+	// 详情
+	GetExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*Example, error)
 	// 创建
 	CreateExample(ctx context.Context, in *CreateExampleReq, opts ...grpc.CallOption) (*Example, error)
 	// 更新
@@ -45,6 +47,15 @@ func NewExampleServiceClient(cc grpc.ClientConnInterface) ExampleServiceClient {
 func (c *exampleServiceClient) GetExampleList(ctx context.Context, in *GetExampleListReq, opts ...grpc.CallOption) (*GetExampleListPageRes, error) {
 	out := new(GetExampleListPageRes)
 	err := c.cc.Invoke(ctx, "/example.v1.ExampleService/GetExampleList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *exampleServiceClient) GetExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*Example, error) {
+	out := new(Example)
+	err := c.cc.Invoke(ctx, "/example.v1.ExampleService/GetExample", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -93,6 +104,8 @@ func (c *exampleServiceClient) RecoverExample(ctx context.Context, in *ExampleId
 type ExampleServiceServer interface {
 	// 列表
 	GetExampleList(context.Context, *GetExampleListReq) (*GetExampleListPageRes, error)
+	// 详情
+	GetExample(context.Context, *ExampleIdReq) (*Example, error)
 	// 创建
 	CreateExample(context.Context, *CreateExampleReq) (*Example, error)
 	// 更新
@@ -110,6 +123,9 @@ type UnimplementedExampleServiceServer struct {
 
 func (UnimplementedExampleServiceServer) GetExampleList(context.Context, *GetExampleListReq) (*GetExampleListPageRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetExampleList not implemented")
+}
+func (UnimplementedExampleServiceServer) GetExample(context.Context, *ExampleIdReq) (*Example, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetExample not implemented")
 }
 func (UnimplementedExampleServiceServer) CreateExample(context.Context, *CreateExampleReq) (*Example, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateExample not implemented")
@@ -150,6 +166,24 @@ func _ExampleService_GetExampleList_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ExampleServiceServer).GetExampleList(ctx, req.(*GetExampleListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ExampleService_GetExample_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExampleIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExampleServiceServer).GetExample(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/example.v1.ExampleService/GetExample",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExampleServiceServer).GetExample(ctx, req.(*ExampleIdReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -238,6 +272,10 @@ var ExampleService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ExampleService_GetExampleList_Handler,
 		},
 		{
+			MethodName: "GetExample",
+			Handler:    _ExampleService_GetExample_Handler,
+		},
+		{
 			MethodName: "CreateExample",
 			Handler:    _ExampleService_CreateExample_Handler,
 		},
@@ -255,5 +293,5 @@ var ExampleService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/example/v1/example.proto",
+	Metadata: "example/v1/example.proto",
 }

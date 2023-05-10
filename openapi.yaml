@@ -39,13 +39,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/GetExampleListPageRes'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/example.v1.GetExampleListPageRes'
         put:
             tags:
                 - ExampleService
@@ -55,7 +49,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UpdateExampleReq'
+                            $ref: '#/components/schemas/example.v1.UpdateExampleReq'
                 required: true
             responses:
                 "200":
@@ -63,13 +57,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CheckResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/example.v1.CheckResponse'
         post:
             tags:
                 - ExampleService
@@ -79,7 +67,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/CreateExampleReq'
+                            $ref: '#/components/schemas/example.v1.CreateExampleReq'
                 required: true
             responses:
                 "200":
@@ -87,13 +75,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Example'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/example.v1.Example'
         delete:
             tags:
                 - ExampleService
@@ -112,13 +94,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CheckResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/example.v1.CheckResponse'
         patch:
             tags:
                 - ExampleService
@@ -128,7 +104,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/ExampleIdReq'
+                            $ref: '#/components/schemas/example.v1.ExampleIdReq'
                 required: true
             responses:
                 "200":
@@ -136,29 +112,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CheckResponse'
-                default:
-                    description: Default error response
+                                $ref: '#/components/schemas/example.v1.CheckResponse'
+    /example/{id}:
+        get:
+            tags:
+                - ExampleService
+            description: 详情
+            operationId: ExampleService_GetExample
+            parameters:
+                - name: id
+                  in: path
+                  description: 主键id
+                  required: true
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/example.v1.Example'
 components:
     schemas:
-        Any:
-            type: object
-            properties:
-                value:
-                    $ref: '#/components/schemas/GoogleProtobufAny'
-                yaml:
-                    type: string
-        CheckResponse:
+        example.v1.CheckResponse:
             type: object
             properties:
                 success:
                     type: boolean
             description: 响应 - 检查是否处理成功
-        CreateExampleReq:
+        example.v1.CreateExampleReq:
             type: object
             properties:
                 name:
@@ -167,30 +151,37 @@ components:
                 status:
                     type: boolean
             description: 请求 - 创建
-        Example:
-            type: object
-            properties:
-                summary:
-                    type: string
-                description:
-                    type: string
-                value:
-                    $ref: '#/components/schemas/Any'
-                externalValue:
-                    type: string
-                specificationExtension:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/NamedAny'
-        ExampleIdReq:
+        example.v1.Example:
             type: object
             properties:
                 id:
                     type: integer
                     description: 主键id
                     format: int64
-            description: 请求 - 删除
-        GetExampleListPageRes:
+                name:
+                    type: string
+                    description: 名称
+                status:
+                    type: boolean
+                    description: 状态
+                createdAt:
+                    type: string
+                    description: 创建时间
+                    format: date-time
+                updatedAt:
+                    type: string
+                    description: 更新时间
+                    format: date-time
+            description: 响应 - 示例信息
+        example.v1.ExampleIdReq:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    description: 主键id
+                    format: int64
+            description: 请求 - 主键id
+        example.v1.GetExampleListPageRes:
             type: object
             properties:
                 total:
@@ -200,43 +191,10 @@ components:
                 list:
                     type: array
                     items:
-                        $ref: '#/components/schemas/Example'
+                        $ref: '#/components/schemas/example.v1.Example'
                     description: 列表
             description: 响应 - 分页
-        GoogleProtobufAny:
-            type: object
-            properties:
-                '@type':
-                    type: string
-                    description: The type of the serialized message.
-            additionalProperties: true
-            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-        NamedAny:
-            type: object
-            properties:
-                name:
-                    type: string
-                    description: Map key
-                value:
-                    $ref: '#/components/schemas/Any'
-            description: Automatically-generated message used to represent maps of Any as ordered (name,value) pairs.
-        Status:
-            type: object
-            properties:
-                code:
-                    type: integer
-                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-                    format: int32
-                message:
-                    type: string
-                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-                details:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/GoogleProtobufAny'
-                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
-            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
-        UpdateExampleReq:
+        example.v1.UpdateExampleReq:
             type: object
             properties:
                 id:

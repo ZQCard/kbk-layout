@@ -38,6 +38,16 @@ func (s *ExampleService) GetExampleList(ctx context.Context, reqData *exampleV1.
 	return res, nil
 }
 
+func (s *ExampleService) GetExample(ctx context.Context, reqData *exampleV1.ExampleIdReq) (*exampleV1.Example, error) {
+	res, err := s.exampleUsecase.GetExample(ctx, &domain.Example{
+		Id: reqData.Id,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return toPbExample(res), nil
+}
+
 func (s *ExampleService) CreateExample(ctx context.Context, reqData *exampleV1.CreateExampleReq) (*exampleV1.Example, error) {
 	res, err := s.exampleUsecase.CreateExample(ctx, &domain.Example{
 		Name:   reqData.Name,
