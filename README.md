@@ -5,11 +5,12 @@
 假设项目目录为data-center
 
 ```
-kratos new data-center -r git@github.com:ZQCard/kratos-base-layout.git
+kratos new $(projectName) -r git@github.com:ZQCard/kratos-base-layout.git
 ```
 # 2.初始化项目package
+此处的projectName的值需要与第一步保持一致
 ```
-make initProject PROJECT=data-center
+make initProject PROJECT=$(projectName)
 ```
 # 3.初始化项目服务
 ```
