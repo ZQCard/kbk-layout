@@ -91,6 +91,9 @@ func (s *ExampleService) RecoverExample(ctx context.Context, reqData *exampleV1.
 }
 
 func toPbExample(example *domain.Example) *exampleV1.Example {
+	if example == nil {
+		return &exampleV1.Example{}
+	}
 	return &exampleV1.Example{
 		Id:        example.Id,
 		Name:      example.Name,

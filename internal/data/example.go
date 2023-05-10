@@ -156,6 +156,9 @@ func (repo ExampleRepo) RecoverExample(ctx context.Context, domain *domain.Examp
 }
 
 func toDomainExample(example *ExampleEntity) *domain.Example {
+	if example == nil {
+		return &domain.Example{}
+	}
 	return &domain.Example{
 		Id:        example.Id,
 		Name:      example.Name,
