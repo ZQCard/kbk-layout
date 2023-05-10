@@ -9,7 +9,7 @@ require (
 	github.com/go-gomail/gomail v0.0.0-20160411212932-81ebce5c23df
 	github.com/go-kratos/kratos/contrib/log/logrus/v2 v2.0.0-20230424154814-520b321fe99b
 	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20230424154814-520b321fe99b
-	github.com/go-kratos/kratos/v2 v2.6.1
+	github.com/go-kratos/kratos/v2 v2.6.2
 	github.com/go-kratos/swagger-api v1.0.1
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-sql-driver/mysql v1.7.0
@@ -29,6 +29,8 @@ require (
 	gorm.io/gorm v1.25.0
 )
 
+require github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
+
 require (
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/coreos/go-systemd/v22 v22.3.2 // indirect
@@ -38,7 +40,7 @@ require (
 	github.com/eapache/queue v1.1.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/go-kratos/aegis v0.1.4 // indirect
+	github.com/go-kratos/aegis v0.2.0 // indirect
 	github.com/go-kratos/grpc-gateway/v2 v2.5.1-0.20210811062259-c92d36e434b1 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect

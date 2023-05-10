@@ -1,11 +1,12 @@
-package requestInfoMiddleware
+package requestInfo
 
 import (
 	"context"
+	"strings"
+
 	"github.com/go-kratos/kratos/v2/metadata"
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	"strings"
 
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/middleware"
@@ -14,7 +15,7 @@ import (
 const domainKey = "x-md-global-domain"
 
 // setRequestInfo 设置Request信息
-func setRequestInfo() middleware.Middleware {
+func SetRequestInfo() middleware.Middleware {
 	return func(handler middleware.Handler) middleware.Handler {
 		return func(ctx context.Context, req interface{}) (reply interface{}, err error) {
 
