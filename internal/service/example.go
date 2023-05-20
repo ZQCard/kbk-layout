@@ -24,9 +24,9 @@ func NewExampleService(exampleUsecase *biz.ExampleUsecase, logger log.Logger) *E
 	}
 }
 
-func (s *ExampleService) GetExampleList(ctx context.Context, reqData *exampleV1.GetExampleListReq) (*exampleV1.GetExampleListPageRes, error) {
+func (s *ExampleService) GetExampleList(ctx context.Context, req *exampleV1.GetExampleListReq) (*exampleV1.GetExampleListPageRes, error) {
 	params := make(map[string]interface{})
-	list, count, err := s.exampleUsecase.ListExample(ctx, reqData.Page, reqData.PageSize, params)
+	list, count, err := s.exampleUsecase.ListExample(ctx, req.Page, req.PageSize, params)
 	if err != nil {
 		return nil, err
 	}
@@ -38,9 +38,9 @@ func (s *ExampleService) GetExampleList(ctx context.Context, reqData *exampleV1.
 	return res, nil
 }
 
-func (s *ExampleService) GetExample(ctx context.Context, reqData *exampleV1.ExampleIdReq) (*exampleV1.Example, error) {
+func (s *ExampleService) GetExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*exampleV1.Example, error) {
 	res, err := s.exampleUsecase.GetExample(ctx, &domain.Example{
-		Id: reqData.Id,
+		Id: req.Id,
 	})
 	if err != nil {
 		return nil, err
@@ -48,10 +48,10 @@ func (s *ExampleService) GetExample(ctx context.Context, reqData *exampleV1.Exam
 	return toPbExample(res), nil
 }
 
-func (s *ExampleService) CreateExample(ctx context.Context, reqData *exampleV1.CreateExampleReq) (*exampleV1.Example, error) {
+func (s *ExampleService) CreateExample(ctx context.Context, req *exampleV1.CreateExampleReq) (*exampleV1.Example, error) {
 	res, err := s.exampleUsecase.CreateExample(ctx, &domain.Example{
-		Name:   reqData.Name,
-		Status: reqData.Status,
+		Name:   req.Name,
+		Status: req.Status,
 	})
 	if err != nil {
 		return nil, err
@@ -59,10 +59,10 @@ func (s *ExampleService) CreateExample(ctx context.Context, reqData *exampleV1.C
 	return toPbExample(res), nil
 }
 
-func (s *ExampleService) UpdateExample(ctx context.Context, reqData *exampleV1.UpdateExampleReq) (*exampleV1.CheckResponse, error) {
+func (s *ExampleService) UpdateExample(ctx context.Context, req *exampleV1.UpdateExampleReq) (*exampleV1.CheckResponse, error) {
 	err := s.exampleUsecase.UpdateExample(ctx, &domain.Example{
-		Id:   reqData.Id,
-		Name: reqData.Name,
+		Id:   req.Id,
+		Name: req.Name,
 	})
 	if err != nil {
 		return nil, err
@@ -70,9 +70,9 @@ func (s *ExampleService) UpdateExample(ctx context.Context, reqData *exampleV1.U
 	return &exampleV1.CheckResponse{Success: true}, nil
 }
 
-func (s *ExampleService) DeleteExample(ctx context.Context, reqData *exampleV1.ExampleIdReq) (*exampleV1.CheckResponse, error) {
+func (s *ExampleService) DeleteExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*exampleV1.CheckResponse, error) {
 	err := s.exampleUsecase.DeleteExample(ctx, &domain.Example{
-		Id: reqData.Id,
+		Id: req.Id,
 	})
 	if err != nil {
 		return nil, err
@@ -80,9 +80,9 @@ func (s *ExampleService) DeleteExample(ctx context.Context, reqData *exampleV1.E
 	return &exampleV1.CheckResponse{Success: true}, nil
 }
 
-func (s *ExampleService) RecoverExample(ctx context.Context, reqData *exampleV1.ExampleIdReq) (*exampleV1.CheckResponse, error) {
+func (s *ExampleService) RecoverExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*exampleV1.CheckResponse, error) {
 	err := s.exampleUsecase.RecoverExample(ctx, &domain.Example{
-		Id: reqData.Id,
+		Id: req.Id,
 	})
 	if err != nil {
 		return nil, err

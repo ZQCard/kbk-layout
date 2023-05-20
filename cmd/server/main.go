@@ -4,7 +4,6 @@ import (
 	"flag"
 	"os"
 
-	"github.com/ZQCard/kratos-base-layout/pkg/utils/loggerHelper"
 	"github.com/go-kratos/kratos/v2/registry"
 	"go.opentelemetry.io/otel/sdk/resource"
 
@@ -21,6 +20,7 @@ import (
 	_ "go.uber.org/automaxprocs"
 
 	"github.com/ZQCard/kratos-base-layout/internal/conf"
+	"github.com/ZQCard/kratos-base-layout/pkg/utils/loggerHelper"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"

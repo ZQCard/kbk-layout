@@ -2,13 +2,11 @@ package requestInfo
 
 import (
 	"context"
-	"strings"
 
 	"github.com/go-kratos/kratos/v2/metadata"
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/go-kratos/kratos/v2/transport/http"
 
-	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/middleware"
 )
 
@@ -29,15 +27,6 @@ func SetRequestInfo() middleware.Middleware {
 				domain := tr.RequestHeader().Get("domain")
 				ctx = metadata.AppendToClientContext(ctx, domainKey, domain)
 				ctx = context.WithValue(ctx, "domain", domain)
-
-				// 获取token值
-				auths := strings.SplitN(tr.RequestHeader().Get("Authorization"), " ", 2)
-				if len(auths) != 2 || !strings.EqualFold(auths[0], "Bearer") {
-					return nil, errors.BadRequest("BAD REQUEST", "登录已过期")
-				}
-				jwtToken := auths[1]
-				// 设置 Authorization
-				tr.RequestHeader().Set("Authorization", "Bearer "+jwtToken)
 			}
 			return handler(ctx, req)
 		}

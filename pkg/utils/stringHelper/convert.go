@@ -6,12 +6,12 @@ import (
 	"github.com/spf13/cast"
 )
 
-func Int64ArrayToComaStr(arr []int64) string {
+func Int64ArrToStr(arr []int64, delimiter string) string {
 	strArr := []string{}
 	for _, v := range arr {
 		strArr = append(strArr, cast.ToString(v))
 	}
-	return strings.Join(strArr, ",")
+	return strings.Join(strArr, delimiter)
 }
 
 func ComaStrToInt64Array(str string) []int64 {
