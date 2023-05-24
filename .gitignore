@@ -37,4 +37,4 @@ bin/
 .idea/
 *.swp
 .history/
-config/config-prod.yaml
+config/config-dev.yaml
