@@ -8,7 +8,6 @@ import (
 	exampleV1 "github.com/ZQCard/kratos-base-layout/api/example/v1"
 	"github.com/ZQCard/kratos-base-layout/internal/biz"
 	"github.com/ZQCard/kratos-base-layout/internal/domain"
-	pbhelper "github.com/ZQCard/kratos-base-layout/pkg/utils/pbHelper"
 )
 
 type ExampleService struct {
@@ -98,8 +97,8 @@ func toPbExample(example *domain.Example) *exampleV1.Example {
 		Id:        example.Id,
 		Name:      example.Name,
 		Status:    example.Status,
-		CreatedAt: pbhelper.TimeToProtoTimestamp(example.CreatedAt),
-		UpdatedAt: pbhelper.TimeToProtoTimestamp(example.UpdatedAt),
+		CreatedAt: example.CreatedAt,
+		UpdatedAt: example.UpdatedAt,
 	}
 }
 
@@ -108,7 +107,7 @@ func toDomainExample(example *domain.Example) *exampleV1.Example {
 		Id:        example.Id,
 		Name:      example.Name,
 		Status:    example.Status,
-		CreatedAt: pbhelper.TimeToProtoTimestamp(example.CreatedAt),
-		UpdatedAt: pbhelper.TimeToProtoTimestamp(example.UpdatedAt),
+		CreatedAt: example.CreatedAt,
+		UpdatedAt: example.UpdatedAt,
 	}
 }

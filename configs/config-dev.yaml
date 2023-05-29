@@ -5,10 +5,10 @@ env:
   mode: dev
 server:
   http:
-    addr: 0.0.0.0:8000
+    addr: 0.0.0.0:7999
     timeout: 10s
   grpc:
-    addr: 0.0.0.0:9000
+    addr: 0.0.0.0:7998
     timeout: 10s
 data:
   database:

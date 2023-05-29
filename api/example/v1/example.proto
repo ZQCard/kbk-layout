@@ -9,9 +9,6 @@ import "validate/validate.proto";
 
 import "openapiv3/annotations.proto";
 
-import "google/protobuf/timestamp.proto";
-
-
 option go_package = "github.com/ZQCard/kratos-base-layout/api/v1/example";
 
 option (openapi.v3.document) = {
@@ -107,9 +104,9 @@ message Example {
     // 状态
     bool status = 3;
     // 创建时间
-    google.protobuf.Timestamp created_at = 4;
+    string created_at = 4;
     // 更新时间
-    google.protobuf.Timestamp updated_at = 5;
+    string updated_at = 5;
 }
 
 // 响应 - 分页

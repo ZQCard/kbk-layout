@@ -167,11 +167,9 @@ components:
                 createdAt:
                     type: string
                     description: 创建时间
-                    format: date-time
                 updatedAt:
                     type: string
                     description: 更新时间
-                    format: date-time
             description: 响应 - 示例信息
         example.v1.ExampleIdReq:
             type: object

@@ -6,6 +6,7 @@ import (
 
 	"github.com/ZQCard/kratos-base-layout/internal/biz"
 	"github.com/ZQCard/kratos-base-layout/internal/domain"
+	"github.com/ZQCard/kratos-base-layout/pkg/utils/timeHelper"
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/gorm"
@@ -167,7 +168,7 @@ func toDomainExample(example *ExampleEntity) *domain.Example {
 	return &domain.Example{
 		Id:        example.Id,
 		Name:      example.Name,
-		CreatedAt: example.CreatedAt,
-		UpdatedAt: example.UpdatedAt,
+		CreatedAt: timeHelper.FormatYMDHIS(&example.CreatedAt),
+		UpdatedAt: timeHelper.FormatYMDHIS(&example.UpdatedAt),
 	}
 }
