@@ -63,7 +63,7 @@ func (r ExampleRepo) GetExampleByParams(params map[string]interface{}) (record *
 	conn := r.searchParam(params)
 	if err = conn.First(&record).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return &ExampleEntity{}, example.ErrorExampleNotFound("数据不存在")
+			return &ExampleEntity{}, example.ErrorRecordNotFound("数据不存在")
 		}
 		return record, example.ErrorSystemError("GetExampleByParams First Error : %s", err.Error())
 	}
@@ -138,7 +138,7 @@ func (r ExampleRepo) DeleteExample(ctx context.Context, domain *domain.Example) 
 		return err
 	}
 	if domain.Id != record.Id {
-		return example.ErrorExampleNotFound("数据不存在")
+		return example.ErrorRecordNotFound("数据不存在")
 	}
 	if err := r.data.db.Where("Id = ?", domain.Id).Delete(&ExampleEntity{}).Error; err != nil {
 		return example.ErrorSystemError("DeleteExample Find Error : %s", err.Error())

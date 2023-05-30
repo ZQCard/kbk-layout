@@ -11,16 +11,16 @@ import (
 // is compatible with the kratos package it is being compiled against.
 const _ = errors.SupportPackageIsVersion1
 
-func IsExampleNotFound(err error) bool {
+func IsRecordNotFound(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_EXAMPLE_NOT_FOUND.String() && e.Code == 404
+	return e.Reason == ErrorReason_RECORD_NOT_FOUND.String() && e.Code == 404
 }
 
-func ErrorExampleNotFound(format string, args ...interface{}) *errors.Error {
-	return errors.New(404, ErrorReason_EXAMPLE_NOT_FOUND.String(), fmt.Sprintf(format, args...))
+func ErrorRecordNotFound(format string, args ...interface{}) *errors.Error {
+	return errors.New(404, ErrorReason_RECORD_NOT_FOUND.String(), fmt.Sprintf(format, args...))
 }
 
 func IsBadRequest(err error) bool {
