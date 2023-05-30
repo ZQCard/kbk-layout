@@ -8,7 +8,7 @@ option go_package = "repo.sweet7.com/sweet7-kratos-template/api/v1/example";
 
 enum ErrorReason {
   option (errors.default_code) = 500;
-  EXAMPLE_NOT_FOUND = 0 [(errors.code) = 404];
+  RECORD_NOT_FOUND = 0 [(errors.code) = 404];
   BAD_REQUEST = 1 [(errors.code) = 400];
   SYSTEM_ERROR = 2 [(errors.code) = 500];
 }
