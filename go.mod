@@ -27,11 +27,7 @@ require (
 	google.golang.org/protobuf v1.30.0
 	gorm.io/driver/mysql v1.5.0
 	gorm.io/gorm v1.25.0
-)
-
-require github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
-
-require (
+	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/coreos/go-systemd/v22 v22.3.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

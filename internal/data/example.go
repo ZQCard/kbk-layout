@@ -2,8 +2,8 @@ package data
 
 import (
 	"context"
-	"net/http"
 
+	"github.com/ZQCard/kratos-base-layout/api/example/v1"
 	"github.com/ZQCard/kratos-base-layout/internal/biz"
 	"github.com/ZQCard/kratos-base-layout/internal/domain"
 	"github.com/ZQCard/kratos-base-layout/pkg/utils/timeHelper"
@@ -58,14 +58,14 @@ func (r ExampleRepo) searchParam(params map[string]interface{}) *gorm.DB {
 
 func (r ExampleRepo) GetExampleByParams(params map[string]interface{}) (record *ExampleEntity, err error) {
 	if len(params) == 0 {
-		return &ExampleEntity{}, errors.BadRequest("MISSING_CONDITION", "缺少搜索条件")
+		return &ExampleEntity{}, example.ErrorBadRequest("参数不得为空")
 	}
 	conn := r.searchParam(params)
 	if err = conn.First(&record).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return &ExampleEntity{}, errors.BadRequest("RECORD_NOT_FOUND", "数据不存在")
+			return &ExampleEntity{}, example.ErrorExampleNotFound("数据不存在")
 		}
-		return record, errors.InternalServer("SYSTEM ERROR", err.Error())
+		return record, example.ErrorSystemError("GetExampleByParams First Error : %s", err.Error())
 	}
 	return record, nil
 }
@@ -76,8 +76,7 @@ func (r ExampleRepo) CreateExample(ctx context.Context, domain *domain.Example) 
 	entity.Name = domain.Name
 	entity.Status = domain.Status
 	if err := r.data.db.Model(entity).Create(entity).Error; err != nil {
-		r.log.Errorf("CreateExample error: %v", err)
-		return nil, errors.New(http.StatusInternalServerError, "SYSTEM ERROR", err.Error())
+		return nil, example.ErrorSystemError("CreateExample Create Error : %s", err.Error())
 	}
 	response := toDomainExample(entity)
 	return response, nil
@@ -95,8 +94,7 @@ func (r ExampleRepo) UpdateExample(ctx context.Context, domain *domain.Example) 
 	record.Name = domain.Name
 	record.Status = domain.Status
 	if err := r.data.db.Model(&record).Where("id = ?", record.Id).Save(&record).Error; err != nil {
-		r.log.Errorf("UpdateExample error: %v", err)
-		return errors.New(http.StatusInternalServerError, "SYSTEM ERROR", err.Error())
+		return example.ErrorSystemError("UpdateExample Save Error : %s", err.Error())
 	}
 
 	return nil
@@ -118,8 +116,7 @@ func (r ExampleRepo) ListExample(ctx context.Context, page, pageSize int64, para
 	conn := r.searchParam(params)
 	err := conn.Scopes(Paginate(page, pageSize)).Find(&list).Error
 	if err != nil {
-		r.log.Errorf("ListExample error: %v", err)
-		return nil, 0, errors.New(http.StatusInternalServerError, "SYSTEM ERROR", err.Error())
+		return nil, 0, example.ErrorSystemError("ListExample Find Error : %s", err.Error())
 	}
 
 	count := int64(0)
@@ -141,22 +138,20 @@ func (r ExampleRepo) DeleteExample(ctx context.Context, domain *domain.Example) 
 		return err
 	}
 	if domain.Id != record.Id {
-		return errors.BadRequest("RECORD_NOT_FOUND", "数据不存在")
+		return example.ErrorExampleNotFound("数据不存在")
 	}
 	if err := r.data.db.Where("Id = ?", domain.Id).Delete(&ExampleEntity{}).Error; err != nil {
-		r.log.Errorf("DeleteExample error: %v", err)
-		return errors.InternalServer("SYSTEM ERROR", err.Error())
+		return example.ErrorSystemError("DeleteExample Find Error : %s", err.Error())
 	}
 	return nil
 }
 
 func (r ExampleRepo) RecoverExample(ctx context.Context, domain *domain.Example) error {
 	if domain.Id == 0 {
-		return errors.BadRequest("MISSING_CONDITION", "缺少搜索条件")
+		return example.ErrorBadRequest("缺少搜索条件")
 	}
 	if err := r.data.db.Model(ExampleEntity{}).Where("Id = ?", domain.Id).UpdateColumn("deleted_at", "").Error; err != nil {
-		r.log.Errorf("RecoverExample error: %v", err)
-		return errors.New(http.StatusInternalServerError, "SYSTEM ERROR", err.Error())
+		return example.ErrorSystemError("RecoverExample UpdateColumn Error : %s", err.Error())
 	}
 	return nil
 }

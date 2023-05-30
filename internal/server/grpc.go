@@ -4,6 +4,7 @@ import (
 	exampleV1 "github.com/ZQCard/kratos-base-layout/api/example/v1"
 	"github.com/ZQCard/kratos-base-layout/internal/conf"
 	"github.com/ZQCard/kratos-base-layout/internal/service"
+	"github.com/ZQCard/kratos-base-layout/pkg/middleware/logging"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -18,7 +19,10 @@ func NewGRPCServer(c *conf.Server, service *service.ExampleService, logger log.L
 		grpc.Middleware(
 			validate.Validator(),
 			recovery.Recovery(),
+			// 链路追踪
 			tracing.Server(),
+			// 访问日志
+			logging.Server(logger),
 		),
 	}
 	if c.Grpc.Network != "" {
