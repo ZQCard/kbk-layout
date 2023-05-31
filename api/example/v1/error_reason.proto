@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package administrator.v1;
+package v1.example;
 
 import "errors/errors.proto";
 
-option go_package = "github.com/ZQCard/kbk-administrator/api/administrator/v1";
+option go_package = "repo.sweet7.com/sweet7-kratos-template/api/v1/example";
 
 enum ErrorReason {
   option (errors.default_code) = 500;
