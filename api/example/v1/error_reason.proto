@@ -1,15 +1,16 @@
 syntax = "proto3";
 
-package v1.example;
+package administrator.v1;
 
 import "errors/errors.proto";
 
-option go_package = "repo.sweet7.com/sweet7-kratos-template/api/v1/example";
+option go_package = "github.com/ZQCard/kbk-administrator/api/administrator/v1";
 
 enum ErrorReason {
   option (errors.default_code) = 500;
   RECORD_NOT_FOUND = 0 [(errors.code) = 404];
-  BAD_REQUEST = 1 [(errors.code) = 400];
-  SYSTEM_ERROR = 2 [(errors.code) = 500];
+  RECORD_ALREADY_EXISTS = 1 [(errors.code) = 400];
+  BAD_REQUEST = 2 [(errors.code) = 400];
+  SYSTEM_ERROR = 3 [(errors.code) = 500];
 }
 
