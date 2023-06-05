@@ -4,7 +4,11 @@ import (
 	"flag"
 	"os"
 
+	ktrus "github.com/go-kratos/kratos/contrib/log/logrus/v2"
 	"github.com/go-kratos/kratos/v2/registry"
+	"github.com/sirupsen/logrus"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/sdk/resource"
 
 	"github.com/go-kratos/kratos/v2"
@@ -20,7 +24,6 @@ import (
 	_ "go.uber.org/automaxprocs"
 
 	"github.com/ZQCard/kratos-base-layout/internal/conf"
-	"github.com/ZQCard/kratos-base-layout/pkg/utils/loggerHelper"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -54,17 +57,15 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server, rr registry.Reg
 	)
 }
 
+func NewLogger() log.Logger {
+	logrus.SetLevel(logrus.DebugLevel)
+	logrus.SetFormatter(&logrus.JSONFormatter{PrettyPrint: true})
+	return ktrus.NewLogger(logrus.StandardLogger())
+}
+
 func main() {
 	flag.Parse()
-	logger := log.With(loggerHelper.NewLogger(),
-		"ts", log.DefaultTimestamp,
-		"caller", log.DefaultCaller,
-		"service.id", id,
-		"service.name", Name,
-		"service.version", Version,
-		"trace.id", tracing.TraceID(),
-		"span.id", tracing.SpanID(),
-	)
+
 	c := config.New(
 		config.WithSource(
 			file.NewSource(flagconf),
@@ -87,18 +88,23 @@ func main() {
 	if err := c.Scan(&rc); err != nil {
 		panic(err)
 	}
-	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(bc.Trace.Endpoint)))
-	if err != nil {
-		panic(err)
-	}
-	tp := tracesdk.NewTracerProvider(
-		tracesdk.WithBatcher(exp),
-		tracesdk.WithResource(resource.NewSchemaless(
-			semconv.ServiceNameKey.String(Name),
-		)),
+
+	logger := log.With(NewLogger(),
+		"ts", log.DefaultTimestamp,
+		"caller", log.DefaultCaller,
+		"service.id", id,
+		"service.name", Name,
+		"service.version", Version,
+		"trace.id", tracing.TraceID(),
+		"span.id", tracing.SpanID(),
 	)
 
-	app, cleanup, err := wireApp(bc.Env, bc.Server, &rc, bc.Data, &bc, logger, tp)
+	err := setTracerProvider(bc.Trace.Endpoint)
+	if err != nil {
+		log.Error(err)
+	}
+
+	app, cleanup, err := wireApp(bc.Env, bc.Server, &rc, bc.Data, &bc, logger)
 	if err != nil {
 		panic(err)
 	}
@@ -108,4 +114,26 @@ func main() {
 	if err := app.Run(); err != nil {
 		panic(err)
 	}
+}
+
+// Set global trace provider
+func setTracerProvider(url string) error {
+	// Create the Jaeger exporter
+	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(url)))
+	if err != nil {
+		return err
+	}
+	tp := tracesdk.NewTracerProvider(
+		// Set the sampling rate based on the parent span to 100%
+		tracesdk.WithSampler(tracesdk.ParentBased(tracesdk.TraceIDRatioBased(1.0))),
+		// Always be sure to batch in production.
+		tracesdk.WithBatcher(exp),
+		// Record information about this application in an Resource.
+		tracesdk.WithResource(resource.NewSchemaless(
+			semconv.ServiceNameKey.String(Name),
+			attribute.String("version", Version),
+		)),
+	)
+	otel.SetTracerProvider(tp)
+	return nil
 }

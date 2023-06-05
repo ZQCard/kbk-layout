@@ -32,37 +32,29 @@ func (s *ExampleService) GetExampleList(ctx context.Context, req *exampleV1.GetE
 	res := &exampleV1.GetExampleListPageRes{}
 	res.Total = int64(count)
 	for _, v := range list {
-		res.List = append(res.List, toPbExample(v))
+		res.List = append(res.List, v.ToPb())
 	}
 	return res, nil
 }
 
 func (s *ExampleService) GetExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*exampleV1.Example, error) {
-	res, err := s.exampleUsecase.GetExample(ctx, &domain.Example{
-		Id: req.Id,
-	})
+	res, err := s.exampleUsecase.GetExample(ctx, domain.ToDomainExample(req))
 	if err != nil {
 		return nil, err
 	}
-	return toPbExample(res), nil
+	return res.ToPb(), nil
 }
 
 func (s *ExampleService) CreateExample(ctx context.Context, req *exampleV1.CreateExampleReq) (*exampleV1.Example, error) {
-	res, err := s.exampleUsecase.CreateExample(ctx, &domain.Example{
-		Name:   req.Name,
-		Status: req.Status,
-	})
+	res, err := s.exampleUsecase.CreateExample(ctx, domain.ToDomainExample(req))
 	if err != nil {
 		return nil, err
 	}
-	return toPbExample(res), nil
+	return res.ToPb(), nil
 }
 
 func (s *ExampleService) UpdateExample(ctx context.Context, req *exampleV1.UpdateExampleReq) (*exampleV1.CheckResponse, error) {
-	err := s.exampleUsecase.UpdateExample(ctx, &domain.Example{
-		Id:   req.Id,
-		Name: req.Name,
-	})
+	err := s.exampleUsecase.UpdateExample(ctx, domain.ToDomainExample(req))
 	if err != nil {
 		return nil, err
 	}
@@ -70,9 +62,7 @@ func (s *ExampleService) UpdateExample(ctx context.Context, req *exampleV1.Updat
 }
 
 func (s *ExampleService) DeleteExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*exampleV1.CheckResponse, error) {
-	err := s.exampleUsecase.DeleteExample(ctx, &domain.Example{
-		Id: req.Id,
-	})
+	err := s.exampleUsecase.DeleteExample(ctx, domain.ToDomainExample(req))
 	if err != nil {
 		return nil, err
 	}
@@ -80,34 +70,9 @@ func (s *ExampleService) DeleteExample(ctx context.Context, req *exampleV1.Examp
 }
 
 func (s *ExampleService) RecoverExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*exampleV1.CheckResponse, error) {
-	err := s.exampleUsecase.RecoverExample(ctx, &domain.Example{
-		Id: req.Id,
-	})
+	err := s.exampleUsecase.RecoverExample(ctx, domain.ToDomainExample(req))
 	if err != nil {
 		return nil, err
 	}
 	return &exampleV1.CheckResponse{Success: true}, nil
-}
-
-func toPbExample(example *domain.Example) *exampleV1.Example {
-	if example == nil {
-		return &exampleV1.Example{}
-	}
-	return &exampleV1.Example{
-		Id:        example.Id,
-		Name:      example.Name,
-		Status:    example.Status,
-		CreatedAt: example.CreatedAt,
-		UpdatedAt: example.UpdatedAt,
-	}
-}
-
-func toDomainExample(example *domain.Example) *exampleV1.Example {
-	return &exampleV1.Example{
-		Id:        example.Id,
-		Name:      example.Name,
-		Status:    example.Status,
-		CreatedAt: example.CreatedAt,
-		UpdatedAt: example.UpdatedAt,
-	}
 }

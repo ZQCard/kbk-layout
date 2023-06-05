@@ -4,7 +4,6 @@ import (
 	exampleV1 "github.com/ZQCard/kratos-base-layout/api/example/v1"
 	"github.com/ZQCard/kratos-base-layout/internal/conf"
 	"github.com/ZQCard/kratos-base-layout/internal/service"
-	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -17,25 +16,25 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, service *service.ExampleService, tp *tracesdk.TracerProvider, logger log.Logger) *http.Server {
+func NewHTTPServer(conf *conf.Bootstrap, server *conf.Server, service *service.ExampleService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
-			validate.Validator(),
 			recovery.Recovery(),
+			validate.Validator(),
 			// 链路追踪
-			tracing.Client(),
+			tracing.Server(),
 			// 访问日志
 			logging.Server(logger),
 		),
 	}
-	if c.Http.Network != "" {
-		opts = append(opts, http.Network(c.Http.Network))
+	if server.Http.Network != "" {
+		opts = append(opts, http.Network(server.Http.Network))
 	}
-	if c.Http.Addr != "" {
-		opts = append(opts, http.Address(c.Http.Addr))
+	if server.Http.Addr != "" {
+		opts = append(opts, http.Address(server.Http.Addr))
 	}
-	if c.Http.Timeout != nil {
-		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
+	if server.Http.Timeout != nil {
+		opts = append(opts, http.Timeout(server.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
 	openAPIhandler := openapiv2.NewHandler()

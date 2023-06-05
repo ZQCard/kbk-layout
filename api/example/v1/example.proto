@@ -104,9 +104,9 @@ message Example {
     // 状态
     bool status = 3;
     // 创建时间
-    string created_at = 4;
+    string create_at = 4;
     // 更新时间
-    string updated_at = 5;
+    string update_at = 5;
 }
 
 // 响应 - 分页

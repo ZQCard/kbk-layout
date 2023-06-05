@@ -164,10 +164,10 @@ components:
                 status:
                     type: boolean
                     description: 状态
-                createdAt:
+                createAt:
                     type: string
                     description: 创建时间
-                updatedAt:
+                updateAt:
                     type: string
                     description: 更新时间
             description: 响应 - 示例信息

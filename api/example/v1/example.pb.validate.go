@@ -299,9 +299,9 @@ func (m *Example) validate(all bool) error {
 
 	// no validation rules for Status
 
-	// no validation rules for CreatedAt
+	// no validation rules for CreateAt
 
-	// no validation rules for UpdatedAt
+	// no validation rules for UpdateAt
 
 	if len(errors) > 0 {
 		return ExampleMultiError(errors)
