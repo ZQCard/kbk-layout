@@ -107,7 +107,7 @@ initNewService:
 	@mkdir -p ./api/$(ServiceLowerName)/v1/
 	@cp ./api/example/v1/example.proto ./api/$(ServiceLowerName)/v1/$(ServiceLowerName).proto
 	@cp ./api/example/v1/error_reason.proto ./api/$(ServiceLowerName)/v1/error_reason.proto
-
+	@make api
 # 删除旧文件
 	@rm -rf ./api/example
 # 生成proto客户端文件
