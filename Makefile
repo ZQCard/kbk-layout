@@ -106,6 +106,7 @@ initNewService:
 # 复制proto文件
 	@mkdir -p ./api/$(ServiceLowerName)/v1/
 	@cp ./api/example/v1/example.proto ./api/$(ServiceLowerName)/v1/$(ServiceLowerName).proto
+	@cp ./api/example/v1/error_reason.proto ./api/$(ServiceLowerName)/v1/error_reason.proto
 
 # 删除旧文件
 	@rm -rf ./api/example

@@ -9,7 +9,7 @@ import "validate/validate.proto";
 
 import "openapiv3/annotations.proto";
 
-option go_package = "github.com/ZQCard/kratos-base-layout/api/v1/example";
+option go_package = "github.com/ZQCard/kratos-base-layout/api/example/v1";
 
 option (openapi.v3.document) = {
     info: {

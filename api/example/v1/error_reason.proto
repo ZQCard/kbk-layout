@@ -4,7 +4,7 @@ package v1.example;
 
 import "errors/errors.proto";
 
-option go_package = "repo.sweet7.com/sweet7-kratos-template/api/v1/example";
+option go_package = "github.com/ZQCard/kratos-base-layout/api/example/v1";
 
 enum ErrorReason {
   option (errors.default_code) = 500;
