@@ -4,9 +4,9 @@ import (
 	exampleV1 "github.com/ZQCard/kratos-base-layout/api/example/v1"
 	"github.com/ZQCard/kratos-base-layout/internal/conf"
 	"github.com/ZQCard/kratos-base-layout/internal/service"
-	"github.com/ZQCard/kratos-base-layout/pkg/middleware/logging"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
