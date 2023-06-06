@@ -6,7 +6,7 @@
 // - protoc             v4.23.0--rc1
 // source: example/v1/example.proto
 
-package example
+package v1
 
 import (
 	context "context"

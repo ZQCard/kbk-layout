@@ -3,7 +3,6 @@ package data
 import (
 	"context"
 
-	"github.com/ZQCard/kratos-base-layout/api/example/v1"
 	"github.com/ZQCard/kratos-base-layout/internal/biz"
 	"github.com/ZQCard/kratos-base-layout/internal/domain"
 	"github.com/go-kratos/kratos/v2/errors"
@@ -137,7 +136,7 @@ func (r ExampleRepo) DeleteExample(ctx context.Context, domain *domain.Example) 
 		return err
 	}
 	if domain.Id != record.Id {
-		return example.ErrorRecordNotFound("数据不存在")
+		return exampleV1.ErrorRecordNotFound("数据不存在")
 	}
 	if err := r.data.db.Where("Id = ?", domain.Id).Delete(&ExampleEntity{}).Error; err != nil {
 		return exampleV1.ErrorSystemError("删除数据失败").WithCause(err)
@@ -147,7 +146,7 @@ func (r ExampleRepo) DeleteExample(ctx context.Context, domain *domain.Example) 
 
 func (r ExampleRepo) RecoverExample(ctx context.Context, domain *domain.Example) error {
 	if domain.Id == 0 {
-		return example.ErrorBadRequest("缺少搜索条件")
+		return exampleV1.ErrorBadRequest("缺少搜索条件")
 	}
 	if err := r.data.db.Model(ExampleEntity{}).Where("Id = ?", domain.Id).UpdateColumn("deleted_at", "").Error; err != nil {
 		return exampleV1.ErrorSystemError("恢复数据失败").WithCause(err)
