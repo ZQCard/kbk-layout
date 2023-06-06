@@ -107,7 +107,6 @@ initNewService:
 	@mkdir -p ./api/$(ServiceLowerName)/v1/
 	@cp ./api/example/v1/example.proto ./api/$(ServiceLowerName)/v1/$(ServiceLowerName).proto
 	@cp ./api/example/v1/error_reason.proto ./api/$(ServiceLowerName)/v1/error_reason.proto
-	@make api
 # 删除旧文件
 	@rm -rf ./api/example
 # 生成proto客户端文件
@@ -121,6 +120,9 @@ initNewService:
 	@ mv ./internal/biz/example.go ./internal/biz/$(ServiceLowerName).go
 	@ mv ./internal/data/example.go ./internal/data/$(ServiceLowerName).go
 	@ mv ./internal/domain/example.go ./internal/domain/$(ServiceLowerName).go
+# 生成api
+	@ make api
 # 拉取引用包
 	go mod tidy
 	@echo "project start success"
+
