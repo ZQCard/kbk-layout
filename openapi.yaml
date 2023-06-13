@@ -33,6 +33,11 @@ paths:
                   description: 名称
                   schema:
                     type: string
+                - name: status.value
+                  in: query
+                  description: The bool value.
+                  schema:
+                    type: boolean
             responses:
                 "200":
                     description: OK

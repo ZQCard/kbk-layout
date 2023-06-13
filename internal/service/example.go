@@ -25,6 +25,10 @@ func NewExampleService(exampleUsecase *biz.ExampleUsecase, logger log.Logger) *E
 
 func (s *ExampleService) GetExampleList(ctx context.Context, req *exampleV1.GetExampleListReq) (*exampleV1.GetExampleListPageRes, error) {
 	params := make(map[string]interface{})
+	params["name"] = req.Name
+	if req.Status != nil {
+		params["status"] = req.Status.Value
+	}
 	list, count, err := s.exampleUsecase.ListExample(ctx, req.Page, req.PageSize, params)
 	if err != nil {
 		return nil, err

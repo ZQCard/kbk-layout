@@ -44,6 +44,9 @@ func (r ExampleRepo) searchParam(params map[string]interface{}) *gorm.DB {
 	if name, ok := params["name"]; ok && name.(string) != "" {
 		conn = conn.Where("name LIKE ?", "%"+name.(string)+"%")
 	}
+	if status, ok := params["status"]; ok && status != nil {
+		conn = conn.Where("status = ?", status)
+	}
 	// 开始时间
 	if start, ok := params["created_at_start"]; ok && start.(string) != "" {
 		conn = conn.Where("created_at >= ?", start.(string)+" 00:00:00")

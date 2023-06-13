@@ -9,6 +9,8 @@ import "validate/validate.proto";
 
 import "openapiv3/annotations.proto";
 
+import "google/protobuf/wrappers.proto";
+
 option go_package = "github.com/ZQCard/kratos-base-layout/api/example/v1";
 
 option (openapi.v3.document) = {
@@ -131,6 +133,8 @@ message  GetExampleListReq {
 
     // 名称
     string name = 3;
+    // 状态 true正常 false冻结
+	google.protobuf.BoolValue status = 4;
 }
 
 // 请求 - 主键id
