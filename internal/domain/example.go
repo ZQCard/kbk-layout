@@ -28,15 +28,15 @@ func (example *Example) UpdatedAt(timestamp time.Time) {
 	example.UpdateAt = timestamp.Format("2006-01-02 15:04:05")
 }
 
-// ToPb 将domain结构体转换为pb结构体
-func (example *Example) ToPb() *exampleV1.Example {
+// Pb 将domain结构体转换为pb结构体
+func (example *Example) Pb() *exampleV1.Example {
 	pb := &exampleV1.Example{}
 	copier.Copy(pb, example)
 	return pb
 }
 
-// ToDomain 将pb结构体转换为domain结构体
-func (example *Example) ToDomain(data interface{}) *Example {
+// Domain 将pb结构体转换为domain结构体
+func (example *Example) Domain(data interface{}) *Example {
 	copier.Copy(example, data)
 	return example
 }

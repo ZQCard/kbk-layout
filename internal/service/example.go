@@ -36,7 +36,7 @@ func (s *ExampleService) GetExampleList(ctx context.Context, req *exampleV1.GetE
 	res := &exampleV1.GetExampleListPageRes{}
 	res.Total = int64(count)
 	for _, v := range list {
-		res.List = append(res.List, v.ToPb())
+		res.List = append(res.List, v.Pb())
 	}
 	return res, nil
 }
@@ -46,7 +46,7 @@ func (s *ExampleService) GetExample(ctx context.Context, req *exampleV1.ExampleI
 	if err != nil {
 		return nil, err
 	}
-	return res.ToPb(), nil
+	return res.Pb(), nil
 }
 
 func (s *ExampleService) CreateExample(ctx context.Context, req *exampleV1.CreateExampleReq) (*exampleV1.Example, error) {
@@ -54,7 +54,7 @@ func (s *ExampleService) CreateExample(ctx context.Context, req *exampleV1.Creat
 	if err != nil {
 		return nil, err
 	}
-	return res.ToPb(), nil
+	return res.Pb(), nil
 }
 
 func (s *ExampleService) UpdateExample(ctx context.Context, req *exampleV1.UpdateExampleReq) (*exampleV1.CheckResponse, error) {
