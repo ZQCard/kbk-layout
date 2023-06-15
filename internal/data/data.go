@@ -1,6 +1,7 @@
 package data
 
 import (
+	"context"
 	"time"
 
 	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
@@ -14,6 +15,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/ZQCard/kratos-base-layout/internal/conf"
+	"github.com/ZQCard/kratos-base-layout/pkg/middleware/requestInfo"
 )
 
 // ProviderSet is data providers.
@@ -63,6 +65,19 @@ func NewRedisClient(conf *conf.Data) *redis.Client {
 		log.Fatalf("redis connect error: %v", err)
 	}
 	return client
+}
+
+func getDomain(ctx context.Context) string {
+	domain := ctx.Value(requestInfo.DomainKey)
+	return domain.(string)
+}
+
+func getDbWithDomain(ctx context.Context, db *gorm.DB) *gorm.DB {
+	domain := ctx.Value(requestInfo.DomainKey)
+	if domain != nil {
+		db = db.Where("domain = ?", domain)
+	}
+	return db
 }
 
 func NewDiscovery(conf *conf.Registry) registry.Discovery {

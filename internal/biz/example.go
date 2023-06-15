@@ -8,7 +8,8 @@ import (
 )
 
 type ExampleRepo interface {
-	ListExample(ctx context.Context, page, pageSize int64, params map[string]interface{}) ([]*domain.Example, int64, error)
+	ListExample(ctx context.Context, page, pageSize int64, params map[string]interface{}) ([]*domain.Example, error)
+	GetExampleCount(ctx context.Context, params map[string]interface{}) (int64, error)
 	GetExample(ctx context.Context, params map[string]interface{}) (*domain.Example, error)
 	CreateExample(ctx context.Context, example *domain.Example) (*domain.Example, error)
 	UpdateExample(ctx context.Context, example *domain.Example) error
@@ -26,7 +27,15 @@ func NewExampleUsecase(repo ExampleRepo, logger log.Logger) *ExampleUsecase {
 }
 
 func (suc *ExampleUsecase) ListExample(ctx context.Context, page, pageSize int64, params map[string]interface{}) ([]*domain.Example, int64, error) {
-	return suc.repo.ListExample(ctx, page, pageSize, params)
+	list, err1 := suc.repo.ListExample(ctx, page, pageSize, params)
+	if err1 != nil {
+		return nil, 0, err1
+	}
+	count, err2 := suc.repo.GetExampleCount(ctx, params)
+	if err2 != nil {
+		return nil, 0, err2
+	}
+	return list, count, nil
 }
 
 func (suc *ExampleUsecase) GetExample(ctx context.Context, example *domain.Example) (*domain.Example, error) {

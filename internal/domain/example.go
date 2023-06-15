@@ -10,6 +10,7 @@ import (
 
 type Example struct {
 	Id       int64
+	Domain   string
 	Name     string
 	Status   bool
 	CreateAt string
@@ -33,12 +34,6 @@ func (example *Example) Pb() *exampleV1.Example {
 	pb := &exampleV1.Example{}
 	copier.Copy(pb, example)
 	return pb
-}
-
-// Domain 将pb结构体转换为domain结构体
-func (example *Example) Domain(data interface{}) *Example {
-	copier.Copy(example, data)
-	return example
 }
 
 // ToDomainExample 将pb结构体转换为domain包下的Example结构体

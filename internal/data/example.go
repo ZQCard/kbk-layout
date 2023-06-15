@@ -14,8 +14,9 @@ import (
 
 type ExampleEntity struct {
 	BaseFields
-	Name   string `gorm:"type:varchar(255);not null;unique;comment:名称"`
+	Name   string `gorm:"type:varchar(255);not null;comment:名称"`
 	Status bool   `gorm:"not null;comment:状态0冻结1正常"`
+	Domain string `gorm:"type:varchar(255);not null;comment:域"`
 }
 
 func (ExampleEntity) TableName() string {
@@ -36,7 +37,7 @@ func NewExampleRepo(data *Data, logger log.Logger) biz.ExampleRepo {
 }
 
 // searchParam 搜索条件
-func (r ExampleRepo) searchParam(params map[string]interface{}) *gorm.DB {
+func (r ExampleRepo) searchParam(ctx context.Context, params map[string]interface{}) *gorm.DB {
 	conn := r.data.db.Model(&ExampleEntity{})
 	if Id, ok := params["id"]; ok && Id.(int64) != 0 {
 		conn = conn.Where("id = ?", Id)
@@ -55,32 +56,37 @@ func (r ExampleRepo) searchParam(params map[string]interface{}) *gorm.DB {
 	if v, ok := params["created_at_end"]; ok && v.(string) != "" {
 		conn = conn.Where("created_at <= ?", v.(string)+" 23:59:59")
 	}
-
+	conn = getDbWithDomain(ctx, conn)
 	return conn
 }
 
-func (r ExampleRepo) ListExample(ctx context.Context, page, pageSize int64, params map[string]interface{}) ([]*domain.Example, int64, error) {
+func (r ExampleRepo) ListExample(ctx context.Context, page, pageSize int64, params map[string]interface{}) ([]*domain.Example, error) {
 	list := []*ExampleEntity{}
-	conn := r.searchParam(params)
+	conn := r.searchParam(ctx, params)
 	err := conn.Scopes(Paginate(page, pageSize)).Find(&list).Error
 	if err != nil {
-		return nil, 0, exampleV1.ErrorSystemError("获取列表失败").WithCause(err)
+		return nil, exampleV1.ErrorSystemError("获取列表失败").WithCause(err)
 	}
 
-	count := int64(0)
-	conn.Count(&count)
 	rv := make([]*domain.Example, 0, len(list))
 	for _, record := range list {
 		rv = append(rv, domain.ToDomainExample(record))
 	}
-	return rv, count, nil
+	return rv, nil
+}
+func (r ExampleRepo) GetExampleCount(ctx context.Context, params map[string]interface{}) (count int64, err error) {
+	if len(params) == 0 {
+		return 0, exampleV1.ErrorBadRequest("参数不得为空")
+	}
+	r.searchParam(ctx, params).Count(&count)
+	return count, nil
 }
 
-func (r ExampleRepo) GetExampleByParams(params map[string]interface{}) (record *ExampleEntity, err error) {
+func (r ExampleRepo) GetExampleByParams(ctx context.Context, params map[string]interface{}) (record *ExampleEntity, err error) {
 	if len(params) == 0 {
 		return &ExampleEntity{}, exampleV1.ErrorBadRequest("参数不得为空")
 	}
-	conn := r.searchParam(params)
+	conn := r.searchParam(ctx, params)
 	if err = conn.First(&record).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return &ExampleEntity{}, exampleV1.ErrorRecordNotFound("数据不存在")
@@ -95,6 +101,7 @@ func (r ExampleRepo) CreateExample(ctx context.Context, example *domain.Example)
 	entity.Id = example.Id
 	entity.Name = example.Name
 	entity.Status = example.Status
+	entity.Domain = example.Domain
 	if err := r.data.db.Model(entity).Create(entity).Error; err != nil {
 		return nil, exampleV1.ErrorSystemError("创建失败").WithCause(err)
 	}
@@ -103,7 +110,7 @@ func (r ExampleRepo) CreateExample(ctx context.Context, example *domain.Example)
 
 func (r ExampleRepo) UpdateExample(ctx context.Context, domain *domain.Example) error {
 	// 根据Id查找记录
-	record, err := r.GetExampleByParams(map[string]interface{}{
+	record, err := r.GetExampleByParams(ctx, map[string]interface{}{
 		"id": domain.Id,
 	})
 	if err != nil {
@@ -112,6 +119,7 @@ func (r ExampleRepo) UpdateExample(ctx context.Context, domain *domain.Example) 
 	// 更新字段
 	record.Name = domain.Name
 	record.Status = domain.Status
+	record.Domain = domain.Domain
 	if err := r.data.db.Model(&record).Where("id = ?", record.Id).Save(&record).Error; err != nil {
 		return exampleV1.ErrorSystemError("更新失败").WithCause(err)
 	}
@@ -121,7 +129,7 @@ func (r ExampleRepo) UpdateExample(ctx context.Context, domain *domain.Example) 
 
 func (r ExampleRepo) GetExample(ctx context.Context, params map[string]interface{}) (*domain.Example, error) {
 	// 根据Id查找记录
-	record, err := r.GetExampleByParams(params)
+	record, err := r.GetExampleByParams(ctx, params)
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +140,7 @@ func (r ExampleRepo) GetExample(ctx context.Context, params map[string]interface
 
 func (r ExampleRepo) DeleteExample(ctx context.Context, domain *domain.Example) error {
 	// 根据Id查找记录
-	record, err := r.GetExampleByParams(map[string]interface{}{
+	record, err := r.GetExampleByParams(ctx, map[string]interface{}{
 		"id": domain.Id,
 	})
 	if err != nil {

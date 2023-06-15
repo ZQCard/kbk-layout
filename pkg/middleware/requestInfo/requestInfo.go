@@ -10,7 +10,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware"
 )
 
-const domainKey = "x-md-global-domain"
+const DomainKey = "x-md-global-domain"
 
 // setRequestInfo 设置Request信息
 func SetRequestInfo() middleware.Middleware {
@@ -25,8 +25,8 @@ func SetRequestInfo() middleware.Middleware {
 
 				// 获取请求域
 				domain := tr.RequestHeader().Get("domain")
-				ctx = metadata.AppendToClientContext(ctx, domainKey, domain)
-				ctx = context.WithValue(ctx, "domain", domain)
+				ctx = metadata.AppendToClientContext(ctx, DomainKey, domain)
+				ctx = context.WithValue(ctx, DomainKey, domain)
 			}
 			return handler(ctx, req)
 		}
