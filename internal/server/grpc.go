@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
+	"github.com/go-kratos/kratos/v2/middleware/metadata"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
@@ -20,6 +21,7 @@ func NewGRPCServer(c *conf.Server, service *service.ExampleService, logger log.L
 		grpc.Middleware(
 			validate.Validator(),
 			recovery.Recovery(),
+			metadata.Server(),
 			// 链路追踪
 			tracing.Server(),
 			// 访问日志
