@@ -41,19 +41,19 @@ func (r ExampleRepo) searchParam(params map[string]interface{}) *gorm.DB {
 	if Id, ok := params["id"]; ok && Id.(int64) != 0 {
 		conn = conn.Where("id = ?", Id)
 	}
-	if name, ok := params["name"]; ok && name.(string) != "" {
-		conn = conn.Where("name LIKE ?", "%"+name.(string)+"%")
+	if v, ok := params["name"]; ok && v.(string) != "" {
+		conn = conn.Where("name LIKE ?", "%"+v.(string)+"%")
 	}
-	if status, ok := params["status"]; ok && status != nil {
-		conn = conn.Where("status = ?", status)
+	if v, ok := params["status"]; ok && v != nil {
+		conn = conn.Where("status = ?", v)
 	}
 	// 开始时间
-	if start, ok := params["created_at_start"]; ok && start.(string) != "" {
-		conn = conn.Where("created_at >= ?", start.(string)+" 00:00:00")
+	if v, ok := params["created_at_start"]; ok && v.(string) != "" {
+		conn = conn.Where("created_at >= ?", v.(string)+" 00:00:00")
 	}
 	// 结束时间
-	if end, ok := params["created_at_end"]; ok && end.(string) != "" {
-		conn = conn.Where("created_at <= ?", end.(string)+" 23:59:59")
+	if v, ok := params["created_at_end"]; ok && v.(string) != "" {
+		conn = conn.Where("created_at <= ?", v.(string)+" 23:59:59")
 	}
 
 	return conn
