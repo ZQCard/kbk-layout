@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package v1.example;
+
+import "errors/errors.proto";
+
+option go_package = "github.com/ZQCard/kratos-base-layout/api/example/v1";
+
+enum ErrorReason {
+  option (errors.default_code) = 500;
+  RECORD_NOT_FOUND = 0 [(errors.code) = 404];
+  RECORD_ALREADY_EXISTS = 1 [(errors.code) = 400];
+  BAD_REQUEST = 2 [(errors.code) = 400];
+  SYSTEM_ERROR = 3 [(errors.code) = 500];
+}
+

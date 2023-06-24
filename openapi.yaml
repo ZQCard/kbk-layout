@@ -1,0 +1,215 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: 示例服务
+    description: 示例服务
+    contact:
+        name: your name
+    version: 0.0.1
+paths:
+    /example:
+        get:
+            tags:
+                - ExampleService
+            description: 列表
+            operationId: ExampleService_GetExampleList
+            parameters:
+                - name: page
+                  in: query
+                  description: 主键id
+                  schema:
+                    type: integer
+                    format: int64
+                - name: pageSize
+                  in: query
+                  description: 页记录数
+                  schema:
+                    type: integer
+                    format: int64
+                - name: name
+                  in: query
+                  description: 名称
+                  schema:
+                    type: string
+                - name: status.value
+                  in: query
+                  description: The bool value.
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/example.v1.GetExampleListPageRes'
+        put:
+            tags:
+                - ExampleService
+            description: 更新
+            operationId: ExampleService_UpdateExample
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/example.v1.UpdateExampleReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/example.v1.CheckResponse'
+        post:
+            tags:
+                - ExampleService
+            description: 创建
+            operationId: ExampleService_CreateExample
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/example.v1.CreateExampleReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/example.v1.Example'
+        delete:
+            tags:
+                - ExampleService
+            description: 删除
+            operationId: ExampleService_DeleteExample
+            parameters:
+                - name: id
+                  in: query
+                  description: 主键id
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/example.v1.CheckResponse'
+        patch:
+            tags:
+                - ExampleService
+            description: 恢复
+            operationId: ExampleService_RecoverExample
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/example.v1.ExampleIdReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/example.v1.CheckResponse'
+    /example/{id}:
+        get:
+            tags:
+                - ExampleService
+            description: 详情
+            operationId: ExampleService_GetExample
+            parameters:
+                - name: id
+                  in: path
+                  description: 主键id
+                  required: true
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/example.v1.Example'
+components:
+    schemas:
+        example.v1.CheckResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+            description: 响应 - 检查是否处理成功
+        example.v1.CreateExampleReq:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: 名称
+                status:
+                    type: boolean
+            description: 请求 - 创建
+        example.v1.Example:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    description: 主键id
+                    format: int64
+                name:
+                    type: string
+                    description: 名称
+                status:
+                    type: boolean
+                    description: 状态
+                created_at:
+                    type: string
+                    description: 创建时间
+                updated_at:
+                    type: string
+                    description: 更新时间
+            description: 响应 - 示例信息
+        example.v1.ExampleIdReq:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    description: 主键id
+                    format: int64
+            description: 请求 - 主键id
+        example.v1.GetExampleListPageRes:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    description: 总数
+                    format: int64
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/example.v1.Example'
+                    description: 列表
+            description: 响应 - 分页
+        example.v1.UpdateExampleReq:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    description: 主键id
+                    format: int64
+                name:
+                    type: string
+                    description: 名称
+                status:
+                    type: boolean
+                    description: 状态
+            description: 请求 - 更新
+tags:
+    - name: ExampleService
