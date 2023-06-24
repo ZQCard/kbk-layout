@@ -10,7 +10,6 @@ require (
 	github.com/go-kratos/swagger-api v1.0.1
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-sql-driver/mysql v1.7.0
-	github.com/golang-jwt/jwt/v4 v4.4.1
 	github.com/google/gnostic v0.6.9
 	github.com/google/wire v0.5.0
 	github.com/jinzhu/copier v0.3.5
