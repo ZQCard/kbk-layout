@@ -1,10 +1,10 @@
 package server
 
 import (
-	exampleV1 "github.com/ZQCard/kratos-base-layout/api/example/v1"
-	"github.com/ZQCard/kratos-base-layout/internal/conf"
-	"github.com/ZQCard/kratos-base-layout/internal/service"
-	"github.com/ZQCard/kratos-base-layout/pkg/middleware/requestInfo"
+	exampleV1 "github.com/ZQCard/kbk-layout/api/example/v1"
+	"github.com/ZQCard/kbk-layout/internal/conf"
+	"github.com/ZQCard/kbk-layout/internal/service"
+	"github.com/ZQCard/kbk-layout/pkg/middleware/requestInfo"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"

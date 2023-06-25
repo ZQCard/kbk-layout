@@ -1,7 +1,7 @@
 GOHOSTOS:=$(shell go env GOHOSTOS)
 GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
-PEOJECT ?= "kratos-base-layout"
+PEOJECT ?= "kbk-layout"
 ServiceUpperName ?= "Example"
 ServiceLowerName ?= "example"
 

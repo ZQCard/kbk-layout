@@ -14,8 +14,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	"github.com/ZQCard/kratos-base-layout/internal/conf"
-	"github.com/ZQCard/kratos-base-layout/pkg/middleware/requestInfo"
+	"github.com/ZQCard/kbk-layout/internal/conf"
+	"github.com/ZQCard/kbk-layout/pkg/middleware/requestInfo"
 )
 
 // ProviderSet is data providers.
@@ -37,7 +37,7 @@ type Data struct {
 }
 
 func NewData(cfg *conf.Bootstrap, db *gorm.DB, redisCli *redis.Client, logger log.Logger) (*Data, func(), error) {
-	logs := log.NewHelper(log.With(logger, "module", "kratos-base-layout/data"))
+	logs := log.NewHelper(log.With(logger, "module", "kbk-layout/data"))
 	cleanup := func() {
 		logs.Info("closing the data resources")
 	}

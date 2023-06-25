@@ -3,7 +3,7 @@ package biz
 import (
 	"context"
 
-	"github.com/ZQCard/kratos-base-layout/internal/domain"
+	"github.com/ZQCard/kbk-layout/internal/domain"
 	"github.com/go-kratos/kratos/v2/log"
 )
 

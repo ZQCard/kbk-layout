@@ -5,9 +5,9 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 
-	exampleV1 "github.com/ZQCard/kratos-base-layout/api/example/v1"
-	"github.com/ZQCard/kratos-base-layout/internal/biz"
-	"github.com/ZQCard/kratos-base-layout/internal/domain"
+	exampleV1 "github.com/ZQCard/kbk-layout/api/example/v1"
+	"github.com/ZQCard/kbk-layout/internal/biz"
+	"github.com/ZQCard/kbk-layout/internal/domain"
 )
 
 type ExampleService struct {

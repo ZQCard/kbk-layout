@@ -1,11 +1,11 @@
-# kratos-base-layout
+# kbk-layout
 方便快速启动服务， 统一项目模板，三键生成微服务
 
 # 1.创建项目指定模板
 假设项目目录为projectName
 
 ```
-kratos new $(projectName) -r git@github.com:ZQCard/kratos-base-layout.git
+kratos new $(projectName) -r git@github.com:ZQCard/kbk-layout.git
 ```
 # 2.初始化项目package
 此处的projectName的值需要与第一步保持一致

@@ -5,7 +5,7 @@ import (
 
 	"github.com/jinzhu/copier"
 
-	exampleV1 "github.com/ZQCard/kratos-base-layout/api/example/v1"
+	exampleV1 "github.com/ZQCard/kbk-layout/api/example/v1"
 )
 
 type Example struct {

@@ -23,4 +23,4 @@ EXPOSE 8000
 EXPOSE 9000
 VOLUME /data/conf
 
-CMD ["./kratos-base-layout", "-conf", "/data/conf/config-dev.yaml"]
+CMD ["./server", "-conf", "/data/conf/config-dev.yaml"]

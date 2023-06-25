@@ -3,13 +3,13 @@ package data
 import (
 	"context"
 
-	"github.com/ZQCard/kratos-base-layout/internal/biz"
-	"github.com/ZQCard/kratos-base-layout/internal/domain"
+	"github.com/ZQCard/kbk-layout/internal/biz"
+	"github.com/ZQCard/kbk-layout/internal/domain"
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/gorm"
 
-	exampleV1 "github.com/ZQCard/kratos-base-layout/api/example/v1"
+	exampleV1 "github.com/ZQCard/kbk-layout/api/example/v1"
 )
 
 type ExampleEntity struct {
