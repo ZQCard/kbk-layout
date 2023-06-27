@@ -127,4 +127,17 @@ initNewService:
 # 拉取引用包
 	go mod tidy
 	@echo "project start success"
-
+.PHONY: docker
+docker:
+	@git pull
+	@docker build -t kbk-layout .
+	@echo "docker build success"
+	@container_id=$$(docker ps -a -f name=kbk-layout -q); \
+    if [ -n "$$container_id" ]; then \
+        docker rm -f "$$container_id"; \
+        echo "Container kbk-layout deleted"; \
+    else \
+        echo "Container kbk-layout not found"; \
+    fi
+	docker run -itd --name kbk-layout -p 8000:8000 -p 9000:9000 -v /data/project/kratos-base-kit/kbk-layout/configs/:/data/conf kbk-layout
+	@echo "docker start success"
