@@ -56,6 +56,11 @@ func (r ExampleRepo) searchParam(ctx context.Context, params map[string]interfac
 	if v, ok := params["created_at_end"]; ok && v.(string) != "" {
 		conn = conn.Where("created_at <= ?", v.(string)+" 23:59:59")
 	}
+	if v, ok := params["is_deleted"]; ok {
+		if v.(bool) {
+			conn = conn.Unscoped()
+		}
+	}
 	conn = getDbWithDomain(ctx, conn)
 	return conn
 }
@@ -149,7 +154,7 @@ func (r ExampleRepo) DeleteExample(ctx context.Context, domain *domain.Example) 
 	if domain.Id != record.Id {
 		return exampleV1.ErrorRecordNotFound("数据不存在")
 	}
-	if err := r.data.db.Where("Id = ?", domain.Id).Delete(&ExampleEntity{}).Error; err != nil {
+	if err := r.data.db.Where("id = ?", domain.Id).Delete(&ExampleEntity{}).Error; err != nil {
 		return exampleV1.ErrorSystemError("删除数据失败").WithCause(err)
 	}
 	return nil
@@ -159,7 +164,18 @@ func (r ExampleRepo) RecoverExample(ctx context.Context, domain *domain.Example)
 	if domain.Id == 0 {
 		return exampleV1.ErrorBadRequest("缺少搜索条件")
 	}
-	if err := r.data.db.Model(ExampleEntity{}).Where("Id = ?", domain.Id).UpdateColumn("deleted_at", "").Error; err != nil {
+	// 根据Id查找记录
+	record, err := r.GetExampleByParams(ctx, map[string]interface{}{
+		"id":         domain.Id,
+		"is_deleted": true,
+	})
+	if err != nil {
+		return err
+	}
+	if domain.Id != record.Id {
+		return exampleV1.ErrorRecordNotFound("数据不存在")
+	}
+	if err := r.data.db.Model(ExampleEntity{}).Unscoped().Where("id = ?", domain.Id).UpdateColumn("deleted_at", "").Error; err != nil {
 		return exampleV1.ErrorSystemError("恢复数据失败").WithCause(err)
 	}
 	return nil
