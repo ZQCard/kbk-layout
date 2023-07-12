@@ -38,6 +38,21 @@ paths:
                   description: The bool value.
                   schema:
                     type: boolean
+                - name: isDeleted.value
+                  in: query
+                  description: The bool value.
+                  schema:
+                    type: boolean
+                - name: createdAtStart
+                  in: query
+                  description: 创建开始时间
+                  schema:
+                    type: string
+                - name: createdAtEnd
+                  in: query
+                  description: 创建结束时间
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: OK
@@ -169,12 +184,15 @@ components:
                 status:
                     type: boolean
                     description: 状态
-                created_at:
+                createdAt:
                     type: string
                     description: 创建时间
-                updated_at:
+                updatedAt:
                     type: string
                     description: 更新时间
+                deletedAt:
+                    type: string
+                    description: 删除时间
             description: 响应 - 示例信息
         example.v1.ExampleIdReq:
             type: object

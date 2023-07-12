@@ -106,7 +106,7 @@ func (r ExampleRepo) CreateExample(ctx context.Context, example *domain.Example)
 	entity.Id = example.Id
 	entity.Name = example.Name
 	entity.Status = example.Status
-	entity.Domain = example.Domain
+	entity.Domain = getDomain(ctx)
 	if err := r.data.db.Model(entity).Create(entity).Error; err != nil {
 		return nil, exampleV1.ErrorSystemError("创建失败").WithCause(err)
 	}
@@ -124,7 +124,7 @@ func (r ExampleRepo) UpdateExample(ctx context.Context, domain *domain.Example) 
 	// 更新字段
 	record.Name = domain.Name
 	record.Status = domain.Status
-	record.Domain = domain.Domain
+	record.Domain = getDomain(ctx)
 	if err := r.data.db.Model(&record).Where("id = ?", record.Id).Save(&record).Error; err != nil {
 		return exampleV1.ErrorSystemError("更新失败").WithCause(err)
 	}

@@ -29,6 +29,11 @@ func (s *ExampleService) GetExampleList(ctx context.Context, req *exampleV1.GetE
 	if req.Status != nil {
 		params["status"] = req.Status.Value
 	}
+	if req.IsDeleted != nil {
+		params["is_deleted"] = req.IsDeleted.Value
+	}
+	params["created_at_start"] = req.CreatedAtStart
+	params["created_at_end"] = req.CreatedAtEnd
 	list, count, err := s.exampleUsecase.ListExample(ctx, req.Page, req.PageSize, params)
 	if err != nil {
 		return nil, err
