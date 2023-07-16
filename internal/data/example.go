@@ -175,7 +175,7 @@ func (r ExampleRepo) RecoverExample(ctx context.Context, domain *domain.Example)
 	if domain.Id != record.Id {
 		return exampleV1.ErrorRecordNotFound("数据不存在")
 	}
-	if err := r.data.db.Model(ExampleEntity{}).Unscoped().Where("id = ?", domain.Id).UpdateColumn("deleted_at", "").Error; err != nil {
+	if err := r.data.db.Model(ExampleEntity{}).Unscoped().Where("id = ?", domain.Id).UpdateColumn("deleted_at", nil).Error; err != nil {
 		return exampleV1.ErrorSystemError("恢复数据失败").WithCause(err)
 	}
 	return nil
