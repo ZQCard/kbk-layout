@@ -42,8 +42,14 @@ func (r ExampleRepo) searchParam(ctx context.Context, params map[string]interfac
 	if Id, ok := params["id"]; ok && Id.(int64) != 0 {
 		conn = conn.Where("id = ?", Id)
 	}
+	if Id, ok := params["id_neq"]; ok && Id.(int64) != 0 {
+		conn = conn.Where("id != ?", Id)
+	}
 	if v, ok := params["name"]; ok && v.(string) != "" {
 		conn = conn.Where("name LIKE ?", "%"+v.(string)+"%")
+	}
+	if v, ok := params["name_eq"]; ok && v.(string) != "" {
+		conn = conn.Where("name = ?", v)
 	}
 	if v, ok := params["status"]; ok && v != nil {
 		conn = conn.Where("status = ?", v)
