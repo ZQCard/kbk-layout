@@ -150,16 +150,6 @@ func (r ExampleRepo) GetExample(ctx context.Context, params map[string]interface
 }
 
 func (r ExampleRepo) DeleteExample(ctx context.Context, domain *domain.Example) error {
-	// 根据Id查找记录
-	record, err := r.GetExampleByParams(ctx, map[string]interface{}{
-		"id": domain.Id,
-	})
-	if err != nil {
-		return err
-	}
-	if domain.Id != record.Id {
-		return exampleV1.ErrorRecordNotFound("数据不存在")
-	}
 	if err := r.data.db.Where("id = ?", domain.Id).Delete(&ExampleEntity{}).Error; err != nil {
 		return exampleV1.ErrorSystemError("删除数据失败").WithCause(err)
 	}
@@ -167,20 +157,6 @@ func (r ExampleRepo) DeleteExample(ctx context.Context, domain *domain.Example) 
 }
 
 func (r ExampleRepo) RecoverExample(ctx context.Context, domain *domain.Example) error {
-	if domain.Id == 0 {
-		return exampleV1.ErrorBadRequest("缺少搜索条件")
-	}
-	// 根据Id查找记录
-	record, err := r.GetExampleByParams(ctx, map[string]interface{}{
-		"id":         domain.Id,
-		"is_deleted": true,
-	})
-	if err != nil {
-		return err
-	}
-	if domain.Id != record.Id {
-		return exampleV1.ErrorRecordNotFound("数据不存在")
-	}
 	if err := r.data.db.Model(ExampleEntity{}).Unscoped().Where("id = ?", domain.Id).UpdateColumn("deleted_at", nil).Error; err != nil {
 		return exampleV1.ErrorSystemError("恢复数据失败").WithCause(err)
 	}

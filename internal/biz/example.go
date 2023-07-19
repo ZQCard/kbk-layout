@@ -69,9 +69,22 @@ func (suc *ExampleUsecase) UpdateExample(ctx context.Context, example *domain.Ex
 }
 
 func (suc *ExampleUsecase) DeleteExample(ctx context.Context, example *domain.Example) error {
+	count, _ := suc.repo.GetExampleCount(ctx, map[string]interface{}{
+		"id": example.Id,
+	})
+	if count > 0 {
+		return v1.ErrorRecordNotFound("名称不存在")
+	}
 	return suc.repo.DeleteExample(ctx, example)
 }
 
 func (suc *ExampleUsecase) RecoverExample(ctx context.Context, example *domain.Example) error {
+	count, _ := suc.repo.GetExampleCount(ctx, map[string]interface{}{
+		"id":         example.Id,
+		"id_deleted": true,
+	})
+	if count > 0 {
+		return v1.ErrorRecordNotFound("名称不存在")
+	}
 	return suc.repo.RecoverExample(ctx, example)
 }
