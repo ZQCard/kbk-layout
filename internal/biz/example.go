@@ -3,6 +3,7 @@ package biz
 import (
 	"context"
 
+	v1 "github.com/ZQCard/kbk-layout/api/example/v1"
 	"github.com/ZQCard/kbk-layout/internal/domain"
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -45,10 +46,25 @@ func (suc *ExampleUsecase) GetExample(ctx context.Context, example *domain.Examp
 }
 
 func (suc *ExampleUsecase) CreateExample(ctx context.Context, example *domain.Example) (*domain.Example, error) {
+	count, _ := suc.repo.GetExampleCount(ctx, map[string]interface{}{
+		"name":       example.Name,
+		"id_deleted": true,
+	})
+	if count > 0 {
+		return nil, v1.ErrorBadRequest("名称已存在")
+	}
 	return suc.repo.CreateExample(ctx, example)
 }
 
 func (suc *ExampleUsecase) UpdateExample(ctx context.Context, example *domain.Example) error {
+	count, _ := suc.repo.GetExampleCount(ctx, map[string]interface{}{
+		"name":       example.Name,
+		"id_deleted": true,
+		"id_neq":     example.Id,
+	})
+	if count > 0 {
+		return v1.ErrorBadRequest("名称已存在")
+	}
 	return suc.repo.UpdateExample(ctx, example)
 }
 
