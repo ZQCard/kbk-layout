@@ -108,15 +108,15 @@ func (r ExampleRepo) GetExampleByParams(ctx context.Context, params map[string]i
 }
 
 func (r ExampleRepo) CreateExample(ctx context.Context, example *domain.Example) (*domain.Example, error) {
-	entity := &ExampleEntity{}
-	entity.Id = example.Id
-	entity.Name = example.Name
-	entity.Status = example.Status
-	entity.Domain = getDomain(ctx)
-	if err := r.data.db.Model(entity).Create(entity).Error; err != nil {
+	record := &ExampleEntity{}
+	record.Id = example.Id
+	record.Name = example.Name
+	record.Status = example.Status
+	record.Domain = getDomain(ctx)
+	if err := r.data.db.Model(record).Create(record).Error; err != nil {
 		return nil, exampleV1.ErrorSystemError("创建失败").WithCause(err)
 	}
-	return domain.ToDomainExample(entity), nil
+	return domain.ToDomainExample(record), nil
 }
 
 func (r ExampleRepo) UpdateExample(ctx context.Context, domain *domain.Example) error {
