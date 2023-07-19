@@ -119,17 +119,17 @@ func (r ExampleRepo) CreateExample(ctx context.Context, example *domain.Example)
 	return domain.ToDomainExample(record), nil
 }
 
-func (r ExampleRepo) UpdateExample(ctx context.Context, domain *domain.Example) error {
+func (r ExampleRepo) UpdateExample(ctx context.Context, example *domain.Example) error {
 	// 根据Id查找记录
 	record, err := r.GetExampleByParams(ctx, map[string]interface{}{
-		"id": domain.Id,
+		"id": example.Id,
 	})
 	if err != nil {
 		return err
 	}
 	// 更新字段
-	record.Name = domain.Name
-	record.Status = domain.Status
+	record.Name = example.Name
+	record.Status = example.Status
 	record.Domain = getDomain(ctx)
 	if err := r.data.db.Model(&record).Where("id = ?", record.Id).Save(&record).Error; err != nil {
 		return exampleV1.ErrorSystemError("更新失败").WithCause(err)
