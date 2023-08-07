@@ -28,13 +28,13 @@ func NewExampleUsecase(repo ExampleRepo, logger log.Logger) *ExampleUsecase {
 }
 
 func (suc *ExampleUsecase) ListExample(ctx context.Context, page, pageSize int64, params map[string]interface{}) ([]*domain.Example, int64, error) {
-	list, err1 := suc.repo.ListExample(ctx, page, pageSize, params)
-	if err1 != nil {
-		return nil, 0, err1
+	list, err := suc.repo.ListExample(ctx, page, pageSize, params)
+	if err != nil {
+		return nil, 0, err
 	}
-	count, err2 := suc.repo.GetExampleCount(ctx, params)
-	if err2 != nil {
-		return nil, 0, err2
+	count, err := suc.repo.GetExampleCount(ctx, params)
+	if err != nil {
+		return nil, 0, err
 	}
 	return list, count, nil
 }
