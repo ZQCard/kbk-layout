@@ -28,12 +28,12 @@ func SetRequestInfo() middleware.Middleware {
 					switch tpKind := tr.Kind(); tpKind {
 					case transport.KindHTTP:
 						trHttp := tr.(*http.Transport)
-						if trHttp.RequestHeader().Get("domain") != "" {
+						if trHttp.RequestHeader().Get("x-md-global-domain") != "" {
 							domain = trHttp.RequestHeader().Get("domain")
 						}
 					case transport.KindGRPC:
 						trHttp := tr.(*grpc.Transport)
-						if trHttp.RequestHeader().Get("domain") != "" {
+						if trHttp.RequestHeader().Get("x-md-global-domain") != "" {
 							domain = trHttp.RequestHeader().Get("domain")
 						}
 					}
