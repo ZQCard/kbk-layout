@@ -73,7 +73,7 @@ func (suc *ExampleUsecase) DeleteExample(ctx context.Context, example *domain.Ex
 		"id": example.Id,
 	})
 	if count == 0 {
-		return v1.ErrorRecordNotFound("名称不存在")
+		return v1.ErrorRecordNotFound("数据不存在")
 	}
 	return suc.repo.DeleteExample(ctx, example)
 }
@@ -84,7 +84,7 @@ func (suc *ExampleUsecase) RecoverExample(ctx context.Context, example *domain.E
 		"id_deleted": true,
 	})
 	if count == 0 {
-		return v1.ErrorRecordNotFound("名称不存在")
+		return v1.ErrorRecordNotFound("数据不存在")
 	}
 	return suc.repo.RecoverExample(ctx, example)
 }
