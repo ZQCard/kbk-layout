@@ -13,8 +13,6 @@ import (
 
 const DomainKey = "x-md-global-domain"
 
-const headerKey = "domain"
-
 // setRequestInfo 设置Request信息
 func SetRequestInfo() middleware.Middleware {
 	return func(handler middleware.Handler) middleware.Handler {
@@ -30,13 +28,13 @@ func SetRequestInfo() middleware.Middleware {
 					switch tpKind := tr.Kind(); tpKind {
 					case transport.KindHTTP:
 						trHttp := tr.(*http.Transport)
-						if trHttp.RequestHeader().Get(headerKey) != "" {
-							domain = trHttp.RequestHeader().Get(headerKey)
+						if trHttp.RequestHeader().Get(DomainKey) != "" {
+							domain = trHttp.RequestHeader().Get(DomainKey)
 						}
 					case transport.KindGRPC:
 						trHttp := tr.(*grpc.Transport)
-						if trHttp.RequestHeader().Get(headerKey) != "" {
-							domain = trHttp.RequestHeader().Get(headerKey)
+						if trHttp.RequestHeader().Get(DomainKey) != "" {
+							domain = trHttp.RequestHeader().Get(DomainKey)
 						}
 					}
 				}
