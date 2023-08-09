@@ -10,6 +10,7 @@ import (
 	context "context"
 	http "github.com/go-kratos/kratos/v2/transport/http"
 	binding "github.com/go-kratos/kratos/v2/transport/http/binding"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -28,11 +29,11 @@ const OperationExampleServiceUpdateExample = "/example.v1.ExampleService/UpdateE
 
 type ExampleServiceHTTPServer interface {
 	CreateExample(context.Context, *CreateExampleReq) (*Example, error)
-	DeleteExample(context.Context, *ExampleIdReq) (*CheckResponse, error)
+	DeleteExample(context.Context, *ExampleIdReq) (*emptypb.Empty, error)
 	GetExample(context.Context, *ExampleIdReq) (*Example, error)
 	GetExampleList(context.Context, *GetExampleListReq) (*GetExampleListPageRes, error)
-	RecoverExample(context.Context, *ExampleIdReq) (*CheckResponse, error)
-	UpdateExample(context.Context, *UpdateExampleReq) (*CheckResponse, error)
+	RecoverExample(context.Context, *ExampleIdReq) (*emptypb.Empty, error)
+	UpdateExample(context.Context, *UpdateExampleReq) (*emptypb.Empty, error)
 }
 
 func RegisterExampleServiceHTTPServer(s *http.Server, srv ExampleServiceHTTPServer) {
@@ -119,7 +120,7 @@ func _ExampleService_UpdateExample0_HTTP_Handler(srv ExampleServiceHTTPServer) f
 		if err != nil {
 			return err
 		}
-		reply := out.(*CheckResponse)
+		reply := out.(*emptypb.Empty)
 		return ctx.Result(200, reply)
 	}
 }
@@ -138,7 +139,7 @@ func _ExampleService_DeleteExample0_HTTP_Handler(srv ExampleServiceHTTPServer) f
 		if err != nil {
 			return err
 		}
-		reply := out.(*CheckResponse)
+		reply := out.(*emptypb.Empty)
 		return ctx.Result(200, reply)
 	}
 }
@@ -157,18 +158,18 @@ func _ExampleService_RecoverExample0_HTTP_Handler(srv ExampleServiceHTTPServer) 
 		if err != nil {
 			return err
 		}
-		reply := out.(*CheckResponse)
+		reply := out.(*emptypb.Empty)
 		return ctx.Result(200, reply)
 	}
 }
 
 type ExampleServiceHTTPClient interface {
 	CreateExample(ctx context.Context, req *CreateExampleReq, opts ...http.CallOption) (rsp *Example, err error)
-	DeleteExample(ctx context.Context, req *ExampleIdReq, opts ...http.CallOption) (rsp *CheckResponse, err error)
+	DeleteExample(ctx context.Context, req *ExampleIdReq, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	GetExample(ctx context.Context, req *ExampleIdReq, opts ...http.CallOption) (rsp *Example, err error)
 	GetExampleList(ctx context.Context, req *GetExampleListReq, opts ...http.CallOption) (rsp *GetExampleListPageRes, err error)
-	RecoverExample(ctx context.Context, req *ExampleIdReq, opts ...http.CallOption) (rsp *CheckResponse, err error)
-	UpdateExample(ctx context.Context, req *UpdateExampleReq, opts ...http.CallOption) (rsp *CheckResponse, err error)
+	RecoverExample(ctx context.Context, req *ExampleIdReq, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	UpdateExample(ctx context.Context, req *UpdateExampleReq, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 }
 
 type ExampleServiceHTTPClientImpl struct {
@@ -192,8 +193,8 @@ func (c *ExampleServiceHTTPClientImpl) CreateExample(ctx context.Context, in *Cr
 	return &out, err
 }
 
-func (c *ExampleServiceHTTPClientImpl) DeleteExample(ctx context.Context, in *ExampleIdReq, opts ...http.CallOption) (*CheckResponse, error) {
-	var out CheckResponse
+func (c *ExampleServiceHTTPClientImpl) DeleteExample(ctx context.Context, in *ExampleIdReq, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
 	pattern := "/example"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationExampleServiceDeleteExample))
@@ -231,8 +232,8 @@ func (c *ExampleServiceHTTPClientImpl) GetExampleList(ctx context.Context, in *G
 	return &out, err
 }
 
-func (c *ExampleServiceHTTPClientImpl) RecoverExample(ctx context.Context, in *ExampleIdReq, opts ...http.CallOption) (*CheckResponse, error) {
-	var out CheckResponse
+func (c *ExampleServiceHTTPClientImpl) RecoverExample(ctx context.Context, in *ExampleIdReq, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
 	pattern := "/example"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationExampleServiceRecoverExample))
@@ -244,8 +245,8 @@ func (c *ExampleServiceHTTPClientImpl) RecoverExample(ctx context.Context, in *E
 	return &out, err
 }
 
-func (c *ExampleServiceHTTPClientImpl) UpdateExample(ctx context.Context, in *UpdateExampleReq, opts ...http.CallOption) (*CheckResponse, error) {
-	var out CheckResponse
+func (c *ExampleServiceHTTPClientImpl) UpdateExample(ctx context.Context, in *UpdateExampleReq, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
 	pattern := "/example"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationExampleServiceUpdateExample))

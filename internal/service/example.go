@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	exampleV1 "github.com/ZQCard/kbk-layout/api/example/v1"
 	"github.com/ZQCard/kbk-layout/internal/biz"
@@ -62,26 +63,14 @@ func (s *ExampleService) CreateExample(ctx context.Context, req *exampleV1.Creat
 	return res.Pb(), nil
 }
 
-func (s *ExampleService) UpdateExample(ctx context.Context, req *exampleV1.UpdateExampleReq) (*exampleV1.CheckResponse, error) {
-	err := s.exampleUsecase.UpdateExample(ctx, domain.ToDomainExample(req))
-	if err != nil {
-		return nil, err
-	}
-	return &exampleV1.CheckResponse{Success: true}, nil
+func (s *ExampleService) UpdateExample(ctx context.Context, req *exampleV1.UpdateExampleReq) (*emptypb.Empty, error) {
+	return nil, s.exampleUsecase.UpdateExample(ctx, domain.ToDomainExample(req))
 }
 
-func (s *ExampleService) DeleteExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*exampleV1.CheckResponse, error) {
-	err := s.exampleUsecase.DeleteExample(ctx, domain.ToDomainExample(req))
-	if err != nil {
-		return nil, err
-	}
-	return &exampleV1.CheckResponse{Success: true}, nil
+func (s *ExampleService) DeleteExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*emptypb.Empty, error) {
+	return nil, s.exampleUsecase.DeleteExample(ctx, domain.ToDomainExample(req))
 }
 
-func (s *ExampleService) RecoverExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*exampleV1.CheckResponse, error) {
-	err := s.exampleUsecase.RecoverExample(ctx, domain.ToDomainExample(req))
-	if err != nil {
-		return nil, err
-	}
-	return &exampleV1.CheckResponse{Success: true}, nil
+func (s *ExampleService) RecoverExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*emptypb.Empty, error) {
+	return nil, s.exampleUsecase.RecoverExample(ctx, domain.ToDomainExample(req))
 }

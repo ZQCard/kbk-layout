@@ -13,6 +13,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -40,11 +41,11 @@ type ExampleServiceClient interface {
 	// 创建
 	CreateExample(ctx context.Context, in *CreateExampleReq, opts ...grpc.CallOption) (*Example, error)
 	// 更新
-	UpdateExample(ctx context.Context, in *UpdateExampleReq, opts ...grpc.CallOption) (*CheckResponse, error)
+	UpdateExample(ctx context.Context, in *UpdateExampleReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 删除
-	DeleteExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*CheckResponse, error)
+	DeleteExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 恢复
-	RecoverExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*CheckResponse, error)
+	RecoverExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type exampleServiceClient struct {
@@ -82,8 +83,8 @@ func (c *exampleServiceClient) CreateExample(ctx context.Context, in *CreateExam
 	return out, nil
 }
 
-func (c *exampleServiceClient) UpdateExample(ctx context.Context, in *UpdateExampleReq, opts ...grpc.CallOption) (*CheckResponse, error) {
-	out := new(CheckResponse)
+func (c *exampleServiceClient) UpdateExample(ctx context.Context, in *UpdateExampleReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, ExampleService_UpdateExample_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -91,8 +92,8 @@ func (c *exampleServiceClient) UpdateExample(ctx context.Context, in *UpdateExam
 	return out, nil
 }
 
-func (c *exampleServiceClient) DeleteExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*CheckResponse, error) {
-	out := new(CheckResponse)
+func (c *exampleServiceClient) DeleteExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, ExampleService_DeleteExample_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -100,8 +101,8 @@ func (c *exampleServiceClient) DeleteExample(ctx context.Context, in *ExampleIdR
 	return out, nil
 }
 
-func (c *exampleServiceClient) RecoverExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*CheckResponse, error) {
-	out := new(CheckResponse)
+func (c *exampleServiceClient) RecoverExample(ctx context.Context, in *ExampleIdReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, ExampleService_RecoverExample_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -120,11 +121,11 @@ type ExampleServiceServer interface {
 	// 创建
 	CreateExample(context.Context, *CreateExampleReq) (*Example, error)
 	// 更新
-	UpdateExample(context.Context, *UpdateExampleReq) (*CheckResponse, error)
+	UpdateExample(context.Context, *UpdateExampleReq) (*emptypb.Empty, error)
 	// 删除
-	DeleteExample(context.Context, *ExampleIdReq) (*CheckResponse, error)
+	DeleteExample(context.Context, *ExampleIdReq) (*emptypb.Empty, error)
 	// 恢复
-	RecoverExample(context.Context, *ExampleIdReq) (*CheckResponse, error)
+	RecoverExample(context.Context, *ExampleIdReq) (*emptypb.Empty, error)
 	mustEmbedUnimplementedExampleServiceServer()
 }
 
@@ -141,13 +142,13 @@ func (UnimplementedExampleServiceServer) GetExample(context.Context, *ExampleIdR
 func (UnimplementedExampleServiceServer) CreateExample(context.Context, *CreateExampleReq) (*Example, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateExample not implemented")
 }
-func (UnimplementedExampleServiceServer) UpdateExample(context.Context, *UpdateExampleReq) (*CheckResponse, error) {
+func (UnimplementedExampleServiceServer) UpdateExample(context.Context, *UpdateExampleReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateExample not implemented")
 }
-func (UnimplementedExampleServiceServer) DeleteExample(context.Context, *ExampleIdReq) (*CheckResponse, error) {
+func (UnimplementedExampleServiceServer) DeleteExample(context.Context, *ExampleIdReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteExample not implemented")
 }
-func (UnimplementedExampleServiceServer) RecoverExample(context.Context, *ExampleIdReq) (*CheckResponse, error) {
+func (UnimplementedExampleServiceServer) RecoverExample(context.Context, *ExampleIdReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RecoverExample not implemented")
 }
 func (UnimplementedExampleServiceServer) mustEmbedUnimplementedExampleServiceServer() {}

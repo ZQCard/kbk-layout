@@ -74,10 +74,7 @@ paths:
             responses:
                 "200":
                     description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/example.v1.CheckResponse'
+                    content: {}
         post:
             tags:
                 - ExampleService
@@ -111,10 +108,7 @@ paths:
             responses:
                 "200":
                     description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/example.v1.CheckResponse'
+                    content: {}
         patch:
             tags:
                 - ExampleService
@@ -129,10 +123,7 @@ paths:
             responses:
                 "200":
                     description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/example.v1.CheckResponse'
+                    content: {}
     /example/{id}:
         get:
             tags:
@@ -156,12 +147,6 @@ paths:
                                 $ref: '#/components/schemas/example.v1.Example'
 components:
     schemas:
-        example.v1.CheckResponse:
-            type: object
-            properties:
-                success:
-                    type: boolean
-            description: 响应 - 检查是否处理成功
         example.v1.CreateExampleReq:
             type: object
             properties:

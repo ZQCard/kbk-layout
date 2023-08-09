@@ -11,6 +11,8 @@ import "openapiv3/annotations.proto";
 
 import "google/protobuf/wrappers.proto";
 
+import "google/protobuf/empty.proto";
+
 option go_package = "github.com/ZQCard/kbk-layout/api/example/v1";
 
 option (openapi.v3.document) = {
@@ -51,7 +53,7 @@ service ExampleService {
     };
 
     // 更新
-    rpc UpdateExample(UpdateExampleReq) returns(CheckResponse){
+    rpc UpdateExample(UpdateExampleReq) returns(google.protobuf.Empty){
         option (google.api.http) = { 
             put:"/example"  
             body:"*"
@@ -59,14 +61,14 @@ service ExampleService {
     };
 
     // 删除
-    rpc DeleteExample(ExampleIdReq) returns(CheckResponse){
+    rpc DeleteExample(ExampleIdReq) returns(google.protobuf.Empty){
         option (google.api.http) = { 
             delete:"/example"  
         };
     };
 
     // 恢复
-    rpc RecoverExample(ExampleIdReq) returns(CheckResponse){
+    rpc RecoverExample(ExampleIdReq) returns(google.protobuf.Empty){
         option (google.api.http) = { 
             patch:"/example"  
             body:"*"
@@ -149,9 +151,4 @@ message  GetExampleListReq {
 message ExampleIdReq {
     // 主键id
     int64 id = 1;
-}
-
-// 响应 - 检查是否处理成功
-message CheckResponse {
-    bool success = 1;
 }
