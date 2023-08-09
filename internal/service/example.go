@@ -64,13 +64,13 @@ func (s *ExampleService) CreateExample(ctx context.Context, req *exampleV1.Creat
 }
 
 func (s *ExampleService) UpdateExample(ctx context.Context, req *exampleV1.UpdateExampleReq) (*emptypb.Empty, error) {
-	return nil, s.exampleUsecase.UpdateExample(ctx, domain.ToDomainExample(req))
+	return &emptypb.Empty{}, s.exampleUsecase.UpdateExample(ctx, domain.ToDomainExample(req))
 }
 
 func (s *ExampleService) DeleteExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*emptypb.Empty, error) {
-	return nil, s.exampleUsecase.DeleteExample(ctx, domain.ToDomainExample(req))
+	return &emptypb.Empty{}, s.exampleUsecase.DeleteExample(ctx, domain.ToDomainExample(req))
 }
 
 func (s *ExampleService) RecoverExample(ctx context.Context, req *exampleV1.ExampleIdReq) (*emptypb.Empty, error) {
-	return nil, s.exampleUsecase.RecoverExample(ctx, domain.ToDomainExample(req))
+	return &emptypb.Empty{}, s.exampleUsecase.RecoverExample(ctx, domain.ToDomainExample(req))
 }
