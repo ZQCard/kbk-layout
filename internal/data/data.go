@@ -4,13 +4,10 @@ import (
 	"context"
 	"time"
 
-	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-redis/redis"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/wire"
-	etcdclient "go.etcd.io/etcd/client/v3"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
@@ -21,8 +18,6 @@ import (
 // ProviderSet is data providers.
 var ProviderSet = wire.NewSet(
 	NewData,
-	NewDiscovery,
-	NewRegistrar,
 	NewRedisCmd,
 	NewMysqlCmd,
 	NewRedisClient,
@@ -78,30 +73,6 @@ func getDbWithDomain(ctx context.Context, db *gorm.DB) *gorm.DB {
 		db = db.Where("domain = ?", domain)
 	}
 	return db
-}
-
-func NewDiscovery(conf *conf.Registry) registry.Discovery {
-	point := conf.Etcd.Address
-	client, err := etcdclient.New(etcdclient.Config{
-		Endpoints: []string{point},
-	})
-	if err != nil {
-		panic(err)
-	}
-	r := etcd.New(client)
-	return r
-}
-
-func NewRegistrar(conf *conf.Registry) registry.Registrar {
-	point := conf.Etcd.Address
-	client, err := etcdclient.New(etcdclient.Config{
-		Endpoints: []string{point},
-	})
-	if err != nil {
-		panic(err)
-	}
-	r := etcd.New(client)
-	return r
 }
 
 func NewRedisCmd(conf *conf.Data, logger log.Logger) redis.Cmdable {

@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${NAME}-config
+  namespace: ${NAMESPACE}
+data:
+  config.yaml: |
+    service:
+      name: ${NAME}
+      version: ${VERSION}
+    env:
+      mode: ${RUN_MODE}
+    server:
+      http:
+        addr: 0.0.0.0:8000
+        timeout: 10.01s
+      grpc:
+        addr: 0.0.0.0:9000
+        timeout: 10.01s
+    data:
+      database:
+        driver: mysql
+        source: ${DB}
+      redis:
+        addr: ${REDIS_ADDR}
+        password: ${REDIS_PASSWORD}
+        read_timeout: ${REDIS_READ_TIMEOUT}
+        write_timeout: ${REDIS_WRITE_TIMEOUT}
+        prefix: "administrator"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${NAME}
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    app: ${NAME}
+  ports:
+    - name: http 
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
+    - name: grpc
+      port: 9000
+      targetPort: 9000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${NAME}
+  namespace: ${NAMESPACE}
+  labels:
+    app: ${NAME}
+spec:
+  replicas: ${NUM}
+  selector: 
+    matchLabels:
+      app: ${NAME}
+  template:
+    metadata:
+      labels:
+        app: ${NAME}
+    spec:
+      containers:
+      - name: ${NAME}
+        image: ${IMAGE}
+        imagePullPolicy: Always
+        command: ["./server"]
+        args: ["-conf", "/configs/config.yaml"]
+        ports:
+        - containerPort: 80
+        resources:  # 资源限制的设置
+          requests:  # 资源请求的限制
+            cpu: ${REQUEST_CPU}  # Cpu的限制，单位为core数
+            memory: ${REQUEST_MEM}  # 内存限制，单位可以为Mib/Gib
+          limits:  # 资源限制的设置
+            cpu: ${LIMIT_CPU}
+            memory: ${LIMIT_MEM}
+        volumeMounts:
+        - name: ${NAME}-config
+          mountPath: /configs
+          readOnly: true
+        - mountPath: /etc/localtime
+          name: localtime  
+      volumes:
+      - name: ${NAME}-config
+        configMap:
+          name: ${NAME}-config
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+      imagePullSecrets:
+      - name: registry-ali    

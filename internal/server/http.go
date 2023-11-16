@@ -10,7 +10,6 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metadata"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
-	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/go-kratos/swagger-api/openapiv2"
@@ -23,8 +22,6 @@ func NewHTTPServer(conf *conf.Bootstrap, server *conf.Server, service *service.E
 			recovery.Recovery(),
 			validate.Validator(),
 			metadata.Server(),
-			// 链路追踪
-			tracing.Server(),
 			// 访问日志
 			logging.Server(logger),
 			// 租户

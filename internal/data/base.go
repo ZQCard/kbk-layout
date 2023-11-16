@@ -3,7 +3,6 @@ package data
 import (
 	"time"
 
-	"github.com/ZQCard/kbk-layout/pkg/utils/stringsHelper/snowid"
 	"gorm.io/gorm"
 )
 
@@ -30,9 +29,4 @@ func Paginate(page, pageSize int64) func(db *gorm.DB) *gorm.DB {
 		offset := (page - 1) * pageSize
 		return db.Offset(int(offset)).Limit(int(pageSize))
 	}
-}
-
-func (u *BaseFields) BeforeCreate(tx *gorm.DB) (err error) {
-	u.Id = snowid.GenSnowId()
-	return
 }
